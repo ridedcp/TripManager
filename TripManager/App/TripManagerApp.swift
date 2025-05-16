@@ -11,7 +11,7 @@ import SwiftUI
 struct TripManagerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TripListView(viewModel: TripListViewModel(getTripsUseCase: MockGetTripsUseCase()))
         }
     }
 }
