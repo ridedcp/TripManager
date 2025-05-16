@@ -27,7 +27,7 @@ final class TripServiceImpl: TripService {
             }
 
             return try JSONDecoder().decode([TripDTO].self, from: data)
-        } catch let decodingError as DecodingError {
+        } catch is DecodingError {
             throw TripServiceError.decodingError
         } catch {
             throw TripServiceError.networkError(error)
