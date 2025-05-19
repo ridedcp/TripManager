@@ -24,7 +24,8 @@ final class TripMapperTests: XCTestCase {
             endTime: "2018-12-18T09:00:00.000Z",
             origin: validOrigin,
             destination: validDestination,
-            route: route
+            route: route,
+            stops: nil
         )
 
         // When
@@ -47,7 +48,8 @@ final class TripMapperTests: XCTestCase {
             endTime: "2018-12-18T09:00:00.000Z",
             origin: validOrigin,
             destination: validDestination,
-            route: route
+            route: route,
+            stops: nil
         )
 
         // When / Then
@@ -65,7 +67,8 @@ final class TripMapperTests: XCTestCase {
             endTime: "2018-12-18T09:00:00.000Z",
             origin: validOrigin,
             destination: validDestination,
-            route: route
+            route: route,
+            stops: nil
         )
 
         // When
@@ -96,7 +99,8 @@ final class TripMapperTests: XCTestCase {
             endTime: "2018-12-18T09:00:00.000Z",
             origin: validOrigin,
             destination: validDestination,
-            route: route
+            route: route,
+            stops: nil
         )
 
         // When / Then
@@ -117,7 +121,8 @@ final class TripMapperTests: XCTestCase {
             endTime: "wrong-end-time",
             origin: validOrigin,
             destination: validDestination,
-            route: route
+            route: route,
+            stops: nil
         )
 
         // When / Then
@@ -128,5 +133,57 @@ final class TripMapperTests: XCTestCase {
             XCTAssertEqual(value, dto.endTime)
         }
     }
-}
 
+    func test_map_includesMappedStops_whenPresent() throws {
+        // Given
+        let stops: [StopDTO] = [
+            StopDTO(id: 1, point: PointDTO(latitude: 41.1, longitude: 2.1)),
+            StopDTO(id: 2, point: PointDTO(latitude: 41.2, longitude: 2.2))
+        ]
+        
+        let dto = TripDTO(
+            description: "With Stops",
+            driverName: "Test",
+            startTime: "2018-12-18T08:00:00.000Z",
+            endTime: "2018-12-18T09:00:00.000Z",
+            origin: validOrigin,
+            destination: validDestination,
+            route: route,
+            stops: stops
+        )
+
+        // When
+        let trip = try TripMapper.map(dto: dto)
+
+        // Then
+        XCTAssertEqual(trip.stops.count, 2)
+        XCTAssertEqual(trip.stops[0].id, 1)
+        XCTAssertEqual(trip.stops[1].point.latitude, 41.2)
+    }
+
+    func test_map_filtersInvalidStops_whenPointIsMissing() throws {
+        // Given
+        let stops: [StopDTO] = [
+            StopDTO(id: 1, point: nil),
+            StopDTO(id: 2, point: PointDTO(latitude: 41.2, longitude: 2.2))
+        ]
+
+        let dto = TripDTO(
+            description: "With Invalid Stop",
+            driverName: "Test",
+            startTime: "2018-12-18T08:00:00.000Z",
+            endTime: "2018-12-18T09:00:00.000Z",
+            origin: validOrigin,
+            destination: validDestination,
+            route: route,
+            stops: stops
+        )
+
+        // When
+        let trip = try TripMapper.map(dto: dto)
+
+        // Then
+        XCTAssertEqual(trip.stops.count, 1)
+        XCTAssertEqual(trip.stops[0].id, 2)
+    }
+}

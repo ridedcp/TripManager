@@ -15,9 +15,13 @@ final class MapRegionBuilderTests: XCTestCase {
         // Given
         let origin = GeoPoint(latitude: 41.38, longitude: 2.18)
         let destination = GeoPoint(latitude: 41.40, longitude: 2.16)
+        let stops = [
+            GeoPoint(latitude: 41.395, longitude: 2.175),
+            GeoPoint(latitude: 41.386, longitude: 2.170)
+        ]
 
         // When
-        let region = MapRegionBuilder.regionFitting(origin: origin, destination: destination)
+        let region = MapRegionBuilder.regionFitting(origin: origin, destination: destination, stops: stops)
 
         // Then
         let expectedCenterLat = (origin.latitude + destination.latitude) / 2
