@@ -15,4 +15,5 @@ struct TripDTO: Decodable {
     let origin: LocationDTO
     let destination: LocationDTO
     let route: String
+    let stops: [StopDTO]?
 }

@@ -45,7 +45,12 @@ final class FakeGetTripsUseCase: GetTripsUseCase {
                 endTime: Date().addingTimeInterval(1800),
                 origin: GeoPoint(latitude: 41.38, longitude: 2.18),
                 destination: GeoPoint(latitude: 41.39, longitude: 2.16),
-                route: "abc123"
+                route: "abc123",
+                stops: [
+                    Stop(id: 1, point: GeoPoint(latitude: 41.385, longitude: 2.175)),
+                    Stop(id: 2, point: GeoPoint(latitude: 41.387, longitude: 2.170)),
+                    Stop(id: 3, point: GeoPoint(latitude: 41.388, longitude: 2.165))
+                ]
             )
         ]
     }
