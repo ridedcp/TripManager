@@ -91,6 +91,36 @@ final class TripServiceTests: XCTestCase {
         // Reset
         MockURLProtocol.responseStatusCode = 200
     }
+    
+    func test_fetchTrips_throwsNetworkError_whenSessionFails() async {
+        // Given
+        MockURLProtocol.error = URLError(.notConnectedToInternet)
+
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [MockURLProtocol.self]
+        let session = URLSession(configuration: config)
+
+        let service = TripServiceImpl(session: session)
+
+        // When / Then
+        do {
+            _ = try await service.fetchTrips()
+            XCTFail("Expected to throw network error")
+        } catch let error as TripServiceError {
+            switch error {
+            case .networkError(let underlying):
+                XCTAssertTrue(underlying is URLError)
+            default:
+                XCTFail("Expected networkError but got \(error)")
+            }
+        } catch {
+            XCTFail("Expected TripServiceError but got \(error)")
+        }
+
+        // Reset
+        MockURLProtocol.error = nil
+    }
+
 
     func XCTAssertThrowsErrorAsync<T>(_ expression: @autoclosure @escaping () async throws -> T, file: StaticString = #file, line: UInt = #line) async {
         do {
