@@ -1,0 +1,104 @@
+//
+//  TripServiceTests.swift
+//  TripManagerTests
+//
+//  Created by Daniel Cano on 19/5/25.
+//
+
+import XCTest
+@testable import TripManager
+
+final class TripServiceTests: XCTestCase {
+
+    func test_fetchTrips_returnsMockedDTOs() async throws {
+        // Given
+        let mockJSON = """
+        [
+            {
+                "description": "Test Trip",
+                "driverName": "Driver One",
+                "startTime": "2018-12-18T08:00:00.000Z",
+                "endTime": "2018-12-18T09:00:00.000Z"
+            }
+        ]
+        """.data(using: .utf8)!
+
+        MockURLProtocol.mockResponseData = mockJSON
+
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [MockURLProtocol.self]
+        let session = URLSession(configuration: config)
+
+        let service = TripServiceImpl(session: session)
+
+        // When
+        let trips = try await service.fetchTrips()
+
+        // Then
+        XCTAssertEqual(trips.count, 1)
+        XCTAssertEqual(trips[0].description, "Test Trip")
+    }
+    
+    func test_fetchTrips_throwsDecodingError_whenJSONIsInvalid() async {
+        // Given
+        let invalidJSON = """
+        [
+            {
+                "description": "Invalid Trip",
+                "driver": "WrongKey", // ❌ incorrect key
+                "startTime": "2018-12-18T08:00:00.000Z",
+                "endTime": "2018-12-18T09:00:00.000Z"
+            }
+        ]
+        """.data(using: .utf8)!
+
+        MockURLProtocol.mockResponseData = invalidJSON
+
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [MockURLProtocol.self]
+        let session = URLSession(configuration: config)
+
+        let service = TripServiceImpl(session: session)
+
+        // When / Then
+        do {
+            _ = try await service.fetchTrips()
+            XCTFail("Expected to throw decoding error")
+        } catch {
+            print("error: \(error)")
+        }
+    }
+    
+    func test_fetchTrips_throwsInvalidResponse_whenStatusCodeIsNot2xx() async {
+        // Given
+        MockURLProtocol.mockResponseData = "{}".data(using: .utf8)
+        MockURLProtocol.responseStatusCode = 500
+
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [MockURLProtocol.self]
+        let session = URLSession(configuration: config)
+
+        let service = TripServiceImpl(session: session)
+
+        // When / Then
+        do {
+            _ = try await service.fetchTrips()
+            XCTFail("Expected to throw decoding error")
+        } catch {
+            print("error: \(error)")
+        }
+
+        // Reset
+        MockURLProtocol.responseStatusCode = 200
+    }
+
+    func XCTAssertThrowsErrorAsync<T>(_ expression: @autoclosure @escaping () async throws -> T, file: StaticString = #file, line: UInt = #line) async {
+        do {
+            _ = try await expression()
+            XCTFail("Expected error to be thrown", file: file, line: line)
+        } catch {
+            print("error: \(error)")
+        }
+    }
+}
+

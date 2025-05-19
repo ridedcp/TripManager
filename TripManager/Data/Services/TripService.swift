@@ -12,6 +12,12 @@ protocol TripService {
 }
 
 final class TripServiceImpl: TripService {
+    private let session: URLSession
+
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
+
     func fetchTrips() async throws -> [TripDTO] {
         let urlString = "https://sandbox-giravolta-static.s3.eu-west-1.amazonaws.com/tech-test/trips.json"
         guard let url = URL(string: urlString) else {
@@ -19,7 +25,7 @@ final class TripServiceImpl: TripService {
         }
 
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await session.data(from: url)
 
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
@@ -27,8 +33,10 @@ final class TripServiceImpl: TripService {
             }
 
             return try JSONDecoder().decode([TripDTO].self, from: data)
-        } catch is DecodingError {
+
+        } catch let error as DecodingError {
             throw TripServiceError.decodingError
+
         } catch {
             throw TripServiceError.networkError(error)
         }
