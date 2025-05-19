@@ -30,5 +30,5 @@ struct TripListView: View {
 
 
 #Preview {
-    TripListView(viewModel: TripListViewModel(getTripsUseCase: MockGetTripsUseCase()))
+    TripListView(viewModel: TripListViewModel(getTripsUseCase: MockGetTripsUseCase(responseType: .success)))
 }

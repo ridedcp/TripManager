@@ -1,13 +1,15 @@
 //
-//  MockGetTripsUseCase.swift
-//  TripManager
+//  MockTripRepository.swift
+//  TripManagerTests
 //
-//  Created by Daniel Cano on 16/5/25.
+//  Created by Daniel Cano on 19/5/25.
 //
 
 import Foundation
+@testable import TripManager
 
-final class MockGetTripsUseCase: GetTripsUseCase {
+final class MockTripRepository: TripRepository {
+
     enum ResponseType {
         case success
         case failure
@@ -19,7 +21,7 @@ final class MockGetTripsUseCase: GetTripsUseCase {
         self.responseType = responseType
     }
 
-    func execute() async throws -> [Trip] {
+    func getTrips() async throws -> [Trip] {
         switch responseType {
         case .success:
             return [
@@ -28,16 +30,10 @@ final class MockGetTripsUseCase: GetTripsUseCase {
                     driverName: "Driver",
                     startTime: Date(),
                     endTime: Date()
-                ),
-                Trip(
-                    description: "Another trip",
-                    driverName: "Driver 2",
-                    startTime: Date(),
-                    endTime: Date()
                 )
             ]
         case .failure:
-            throw TripServiceError.invalidResponse
+            throw TripServiceError.invalidURL
         }
     }
 }

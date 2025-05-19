@@ -9,40 +9,38 @@ import XCTest
 @testable import TripManager
 
 final class TripListViewModelTests: XCTestCase {
-    
-    // MARK: - Helpers
-    
-    private func makeSUT(using useCase: GetTripsUseCase) async -> TripListViewModel {
-        await TripListViewModel(getTripsUseCase: useCase)
+
+    private func makeSUT(responseType: MockGetTripsUseCase.ResponseType) async -> TripListViewModel {
+        await TripListViewModel(getTripsUseCase: MockGetTripsUseCase(responseType: responseType))
     }
 
     // MARK: - Tests
 
     func test_loadTrips_successfullyUpdatesTrips() async throws {
         // Given
-        let viewModel = await makeSUT(using: MockGetTripsUseCaseSuccess())
+        let viewModel = await makeSUT(responseType: .success)
 
         // When
         await viewModel.loadTrips()
 
         // Then
         await MainActor.run {
-            XCTAssertEqual(viewModel.trips.count, 2, "Expected 2 trips but got \(viewModel.trips.count)")
-            XCTAssertNil(viewModel.errorMessage, "Expected no error message")
-            XCTAssertFalse(viewModel.isLoading, "Expected isLoading to be false")
+            XCTAssertEqual(viewModel.trips.count, 2, "Expected 2 trips")
+            XCTAssertNil(viewModel.errorMessage)
+            XCTAssertFalse(viewModel.isLoading)
         }
     }
 
     func test_loadTrips_setsErrorMessageOnFailure() async throws {
         // Given
-        let viewModel = await makeSUT(using: MockGetTripsUseCaseFailure())
+        let viewModel = await makeSUT(responseType: .failure)
 
         // When
         await viewModel.loadTrips()
 
         // Then
         await MainActor.run {
-            XCTAssertTrue(viewModel.trips.isEmpty, "Expected trips to be empty on failure")
+            XCTAssertTrue(viewModel.trips.isEmpty)
             XCTAssertEqual(viewModel.errorMessage, "Failed to load trips")
         }
     }
