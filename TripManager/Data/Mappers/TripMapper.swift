@@ -10,6 +10,7 @@ import Foundation
 struct TripMapper {
     static func map(dto: TripDTO) throws -> Trip {
         let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
 
         guard let start = formatter.date(from: dto.startTime) else {
             throw TripMapperError.invalidDate(dto.startTime)
