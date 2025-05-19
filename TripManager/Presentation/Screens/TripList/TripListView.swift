@@ -13,11 +13,13 @@ struct TripListView: View {
     var body: some View {
         NavigationView {
             List(viewModel.trips, id: \.description) { trip in
-                VStack(alignment: .leading) {
-                    Text(trip.description)
-                        .font(.headline)
-                    Text("Driver: \(trip.driverName)")
-                        .font(.subheadline)
+                NavigationLink(destination: TripMapView(trip: trip)) {
+                    VStack(alignment: .leading) {
+                        Text(trip.description)
+                            .font(.headline)
+                        Text("Driver: \(trip.driverName)")
+                            .font(.subheadline)
+                    }
                 }
             }
             .navigationTitle("Trips")

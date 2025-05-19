@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3366084B2DDB425100C74BE7 /* Polyline in Frameworks */ = {isa = PBXBuildFile; productRef = 3366084A2DDB425100C74BE7 /* Polyline */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		33593AB22DD7956A00089C2A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3366084B2DDB425100C74BE7 /* Polyline in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = TripManager;
 			packageProductDependencies = (
+				3366084A2DDB425100C74BE7 /* Polyline */,
 			);
 			productName = TripManager;
 			productReference = 33593AA42DD7956900089C2A /* TripManager.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 33593A9B2DD7956900089C2A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				336608492DDB425100C74BE7 /* XCRemoteSwiftPackageReference "Polyline" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 33593AA52DD7956900089C2A /* Products */;
 			projectDirPath = "";
@@ -322,7 +331,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -380,7 +389,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -558,6 +567,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		336608492DDB425100C74BE7 /* XCRemoteSwiftPackageReference "Polyline" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/raphaelmor/Polyline";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3366084A2DDB425100C74BE7 /* Polyline */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 336608492DDB425100C74BE7 /* XCRemoteSwiftPackageReference "Polyline" */;
+			productName = Polyline;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 33593A9C2DD7956900089C2A /* Project object */;
 }
