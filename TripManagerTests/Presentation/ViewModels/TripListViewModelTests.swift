@@ -44,4 +44,20 @@ final class TripListViewModelTests: XCTestCase {
             XCTAssertEqual(viewModel.errorMessage, "Failed to load trips")
         }
     }
+    
+    func test_loadTrips_withTwoTrips_returnsCorrectCount() async {
+        // Given
+        let useCase = MockGetTripsUseCase(responseType: .success)
+        let viewModel = await TripListViewModel(getTripsUseCase: useCase)
+        
+        // When
+        await viewModel.loadTrips()
+        
+        // Then
+        await MainActor.run {
+            XCTAssertEqual(viewModel.trips.count, 2, "Expected 2 trips but got \(viewModel.trips.count)")
+            XCTAssertNil(viewModel.errorMessage, "Expected no error message")
+            XCTAssertFalse(viewModel.isLoading, "Expected loading to be false")
+        }
+    }
 }
