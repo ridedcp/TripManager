@@ -29,7 +29,10 @@ final class MockTripRepository: TripRepository {
                     description: "Mock trip",
                     driverName: "Driver",
                     startTime: Date(),
-                    endTime: Date()
+                    endTime: Date().addingTimeInterval(1800),
+                    origin: GeoPoint(latitude: 41.38074, longitude: 2.18594),
+                    destination: GeoPoint(latitude: 41.39664, longitude: 2.16073),
+                    route: "sdq{Fc}iLj@zR|W~TryCzvC"
                 )
             ]
         case .failure:

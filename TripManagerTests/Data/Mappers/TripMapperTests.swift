@@ -10,13 +10,21 @@ import XCTest
 
 final class TripMapperTests: XCTestCase {
     
+    private let validOrigin = LocationDTO(address: "Origen", point: PointDTO(latitude: 41.0, longitude: 2.0))
+    private let validDestination = LocationDTO(address: "Destino", point: PointDTO(latitude: 42.0, longitude: 3.0))
+
+    private let route = "abc123"
+
     func test_map_validDTO_returnsTrip() throws {
         // Given
         let dto = TripDTO(
             description: "Test Trip",
             driverName: "Daniel",
             startTime: "2018-12-18T08:00:00.000Z",
-            endTime: "2018-12-18T09:00:00.000Z"
+            endTime: "2018-12-18T09:00:00.000Z",
+            origin: validOrigin,
+            destination: validDestination,
+            route: route
         )
 
         // When
@@ -25,6 +33,9 @@ final class TripMapperTests: XCTestCase {
         // Then
         XCTAssertEqual(trip.description, dto.description)
         XCTAssertEqual(trip.driverName, dto.driverName)
+        XCTAssertEqual(trip.route, dto.route)
+        XCTAssertEqual(trip.origin.latitude, validOrigin.point.latitude)
+        XCTAssertEqual(trip.destination.longitude, validDestination.point.longitude)
     }
     
     func test_map_invalidDate_throwsError() throws {
@@ -33,12 +44,15 @@ final class TripMapperTests: XCTestCase {
             description: "Invalid Trip",
             driverName: "Test",
             startTime: "invalid-date",
-            endTime: "2018-12-18T09:00:00.000Z"
+            endTime: "2018-12-18T09:00:00.000Z",
+            origin: validOrigin,
+            destination: validDestination,
+            route: route
         )
 
         // When / Then
-        XCTAssertThrowsError(try TripMapper.map(dto: dto)) { error in
-            XCTAssertTrue(error is TripMapperError)
+        XCTAssertThrowsError(try TripMapper.map(dto: dto)) {
+            XCTAssertTrue($0 is TripMapperError)
         }
     }
     
@@ -48,7 +62,10 @@ final class TripMapperTests: XCTestCase {
             description: "Test Trip",
             driverName: "Driver 1",
             startTime: "2018-12-18T08:00:00.000Z",
-            endTime: "2018-12-18T09:00:00.000Z"
+            endTime: "2018-12-18T09:00:00.000Z",
+            origin: validOrigin,
+            destination: validDestination,
+            route: route
         )
 
         // When
@@ -76,7 +93,10 @@ final class TripMapperTests: XCTestCase {
             description: "Invalid Start",
             driverName: "Driver",
             startTime: "not-a-date",
-            endTime: "2018-12-18T09:00:00.000Z"
+            endTime: "2018-12-18T09:00:00.000Z",
+            origin: validOrigin,
+            destination: validDestination,
+            route: route
         )
 
         // When / Then
@@ -94,7 +114,10 @@ final class TripMapperTests: XCTestCase {
             description: "Invalid End",
             driverName: "Driver",
             startTime: "2018-12-18T08:00:00.000Z",
-            endTime: "wrong-end-time"
+            endTime: "wrong-end-time",
+            origin: validOrigin,
+            destination: validDestination,
+            route: route
         )
 
         // When / Then

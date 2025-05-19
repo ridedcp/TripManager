@@ -30,5 +30,21 @@ struct TripListView: View {
 
 
 #Preview {
-    TripListView(viewModel: TripListViewModel(getTripsUseCase: MockGetTripsUseCase(responseType: .success)))
+    TripListView(viewModel: TripListViewModel(getTripsUseCase: FakeGetTripsUseCase()))
+}
+
+final class FakeGetTripsUseCase: GetTripsUseCase {
+    func execute() async throws -> [Trip] {
+        [
+            Trip(
+                description: "Preview Trip",
+                driverName: "Preview Driver",
+                startTime: Date(),
+                endTime: Date().addingTimeInterval(1800),
+                origin: GeoPoint(latitude: 41.38, longitude: 2.18),
+                destination: GeoPoint(latitude: 41.39, longitude: 2.16),
+                route: "abc123"
+            )
+        ]
+    }
 }

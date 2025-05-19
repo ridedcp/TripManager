@@ -24,7 +24,10 @@ struct TripMapper {
             description: dto.description,
             driverName: dto.driverName,
             startTime: start,
-            endTime: end
+            endTime: end,
+            origin: GeoPoint(latitude: dto.origin.point.latitude, longitude: dto.origin.point.longitude),
+            destination: GeoPoint(latitude: dto.destination.point.latitude, longitude: dto.destination.point.longitude),
+            route: dto.route
         )
     }
 }

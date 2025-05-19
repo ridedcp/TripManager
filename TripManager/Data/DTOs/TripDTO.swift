@@ -12,4 +12,7 @@ struct TripDTO: Decodable {
     let driverName: String
     let startTime: String
     let endTime: String
+    let origin: LocationDTO
+    let destination: LocationDTO
+    let route: String
 }

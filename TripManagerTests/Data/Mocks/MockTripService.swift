@@ -30,7 +30,10 @@ final class MockTripService: TripService {
                     description: "Mock trip",
                     driverName: "Mock driver",
                     startTime: "2018-12-18T08:00:00.000Z",
-                    endTime: "2018-12-18T09:00:00.000Z"
+                    endTime: "2018-12-18T09:00:00.000Z",
+                    origin: LocationDTO(address: "Origen de prueba", point: PointDTO(latitude: 41.38074, longitude: 2.18594)),
+                    destination: LocationDTO(address: "Destino de prueba", point: PointDTO(latitude: 41.39664, longitude: 2.16073)),
+                    route: "sdq{Fc}iLj@zR|W~TryCzvC"
                 )
             ]
 
@@ -43,7 +46,10 @@ final class MockTripService: TripService {
                     description: "Broken trip",
                     driverName: "Driver",
                     startTime: "not-a-date",
-                    endTime: "2018-12-18T09:00:00.000Z"
+                    endTime: "2018-12-18T09:00:00.000Z",
+                    origin: LocationDTO(address: "Origen con error", point: PointDTO(latitude: 41.0, longitude: 2.0)),
+                    destination: LocationDTO(address: "Destino con error", point: PointDTO(latitude: 42.0, longitude: 3.0)),
+                    route: "xxx"
                 )
             ]
         }

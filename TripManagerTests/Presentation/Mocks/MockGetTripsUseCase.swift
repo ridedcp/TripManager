@@ -8,21 +8,44 @@
 import Foundation
 @testable import TripManager
 
-enum TestError: Error {
-    case mock
-}
+final class MockGetTripsUseCase: GetTripsUseCase {
 
-struct MockGetTripsUseCaseSuccess: GetTripsUseCase {
-    func execute() async throws -> [Trip] {
-        [
-            Trip(description: "Barcelona → Martorell", driverName: "Alberto", startTime: Date(), endTime: Date()),
-            Trip(description: "Sabadell → Terrassa", driverName: "Daniel", startTime: Date(), endTime: Date())
-        ]
+    enum ResponseType {
+        case success
+        case failure
     }
-}
 
-struct MockGetTripsUseCaseFailure: GetTripsUseCase {
+    private let responseType: ResponseType
+
+    init(responseType: ResponseType) {
+        self.responseType = responseType
+    }
+
     func execute() async throws -> [Trip] {
-        throw TestError.mock
+        switch responseType {
+        case .success:
+            return [
+                Trip(
+                    description: "Barcelona → Martorell",
+                    driverName: "Alberto",
+                    startTime: Date(),
+                    endTime: Date().addingTimeInterval(1800),
+                    origin: GeoPoint(latitude: 41.38074, longitude: 2.18594),
+                    destination: GeoPoint(latitude: 41.49958, longitude: 1.90307),
+                    route: "sdq{Fc}iLj@zR|W~TryCzvC"
+                ),
+                Trip(
+                    description: "Sabadell → Terrassa",
+                    driverName: "Daniel",
+                    startTime: Date(),
+                    endTime: Date().addingTimeInterval(3600),
+                    origin: GeoPoint(latitude: 41.5463, longitude: 2.1086),
+                    destination: GeoPoint(latitude: 41.5632, longitude: 2.0087),
+                    route: "mif_GoifP}`F?auAst@qdCxmA"
+                )
+            ]
+        case .failure:
+            throw TripServiceError.invalidResponse
+        }
     }
 }

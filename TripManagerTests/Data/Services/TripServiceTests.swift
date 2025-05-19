@@ -18,7 +18,22 @@ final class TripServiceTests: XCTestCase {
                 "description": "Test Trip",
                 "driverName": "Driver One",
                 "startTime": "2018-12-18T08:00:00.000Z",
-                "endTime": "2018-12-18T09:00:00.000Z"
+                "endTime": "2018-12-18T09:00:00.000Z",
+                "origin": {
+                    "address": "Origen",
+                    "point": {
+                        "_latitude": 41.38074,
+                        "_longitude": 2.18594
+                    }
+                },
+                "destination": {
+                    "address": "Destino",
+                    "point": {
+                        "_latitude": 41.39664,
+                        "_longitude": 2.16073
+                    }
+                },
+                "route": "sdq{Fc}iLj@zR|W~TryCzvC"
             }
         ]
         """.data(using: .utf8)!

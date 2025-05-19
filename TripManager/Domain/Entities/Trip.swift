@@ -12,4 +12,7 @@ struct Trip {
     let driverName: String
     let startTime: Date
     let endTime: Date
+    let origin: GeoPoint
+    let destination: GeoPoint
+    let route: String
 }

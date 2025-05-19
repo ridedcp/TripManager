@@ -32,7 +32,11 @@ final class TripServiceImpl: TripService {
                 throw TripServiceError.invalidResponse
             }
 
-            return try JSONDecoder().decode([TripDTO].self, from: data)
+            do {
+                let trips = try JSONDecoder().decode([TripDTO].self, from: data)
+                return trips            } catch {
+                throw TripServiceError.decodingError
+            }
 
         } catch _ as DecodingError {
             throw TripServiceError.decodingError
