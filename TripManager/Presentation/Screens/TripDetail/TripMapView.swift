@@ -37,9 +37,6 @@ struct TripMapView: View {
                     Annotation("Stop \(index + 1)", coordinate: stop.point.toCoord()) {
                         MapPinView(color: .blue)
                             .onTapGesture {
-                                if let detailedStop = viewModel.detailedStops.first(where: { $0.id == stop.id && $0.tripId == trip.id }) {
-                                    viewModel.selectedStop = detailedStop
-                                }
                                 selectedMarker = .stop(index + 1)
                             }
                     }
@@ -60,16 +57,13 @@ struct TripMapView: View {
                     )
                 )
                 viewModel.decodePolyline(trip.route)
-
-                Task {
-                    await viewModel.loadDetailedStops(for: trip.id)
-                }
+                Task { await viewModel.loadDetailedStop() }
             }
 
             TripInfoFooterView(trip: trip)
         }
         .sheet(item: $selectedMarker) { marker in
-            StopDetailsSheet(marker: marker, trip: trip, stop: viewModel.selectedStop)
+            StopDetailsSheet(marker: marker, trip: trip, stop: viewModel.detailedStop)
         }
     }
 }
@@ -77,13 +71,13 @@ struct TripMapView: View {
 #Preview {
     TripMapView(
         trip: FakeTripMapData.previewTrip,
-        viewModel: TripMapViewModel(getDetailedStopsUseCase: FakeGetDetailedStopsUseCase())
+        viewModel: TripMapViewModel(getDetailedStopUseCase: FakeGetDetailedStopUseCase())
     )
 }
 
-final class FakeGetDetailedStopsUseCase: GetDetailedStopsUseCase {
-    func execute() async throws -> [StopDetailed] {
-        return []
+final class FakeGetDetailedStopUseCase: GetDetailedStopUseCase {
+    func execute() async throws -> StopDetailed {
+        return StopDetailed(price: 0.0, address: "", tripId: 0, paid: false, stopTime: Date(), point: GeoPoint(latitude: 0.0, longitude: 0.0), userName: "")
     }
 }
 

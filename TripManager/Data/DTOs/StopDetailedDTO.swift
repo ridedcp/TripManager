@@ -8,13 +8,12 @@
 import Foundation
 
 struct StopDetailedDTO: Decodable {
-    let id: Int?
-    let point: PointDTO?
-    let address: String?
-    let tripId: Int?
-    let paid: Bool?
-    let stopTime: String?
-    let userName: String?
-    let price: Double?
+    let price: Double
+    let address: String
+    let tripId: Int
+    let paid: Bool
+    let stopTime: String
+    let point: PointDTO
+    let userName: String
 }
 

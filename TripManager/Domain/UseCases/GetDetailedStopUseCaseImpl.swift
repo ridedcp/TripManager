@@ -7,14 +7,14 @@
 
 import Foundation
 
-final class GetDetailedStopsUseCaseImpl: GetDetailedStopsUseCase {
+final class GetDetailedStopUseCaseImpl: GetDetailedStopUseCase {
     private let repository: StopDetailedRepository
 
     init(repository: StopDetailedRepository) {
         self.repository = repository
     }
 
-    func execute() async throws -> [StopDetailed] {
-        try await repository.getDetailedStops()
+    func execute() async throws -> StopDetailed {
+        try await repository.getDetailedStop()
     }
 }

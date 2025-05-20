@@ -8,31 +8,20 @@
 import Foundation
 
 enum StopDetailedMapper {
-    static func mapList(dtos: [StopDetailedDTO]) -> [StopDetailed] {
+    static func map(dto: StopDetailedDTO) -> StopDetailed? {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
 
-        return dtos.compactMap { dto in
-            guard let point = dto.point,
-                  let address = dto.address,
-                  let tripId = dto.tripId,
-                  let paid = dto.paid,
-                  let userName = dto.userName,
-                  let price = dto.price
-            else { return nil }
+        guard let stopTime = formatter.date(from: dto.stopTime) else { return nil }
 
-            let stopTime = dto.stopTime.flatMap { formatter.date(from: $0) }
-
-            return StopDetailed(
-                id: dto.id ?? -1,
-                point: GeoPoint(latitude: point.latitude, longitude: point.longitude),
-                address: address,
-                tripId: tripId,
-                paid: paid,
-                stopTime: stopTime,
-                userName: userName,
-                price: price
-            )
-        }
+        return StopDetailed(
+            price: dto.price,
+            address: dto.address,
+            tripId: dto.tripId,
+            paid: dto.paid,
+            stopTime: stopTime,
+            point: GeoPoint(latitude: dto.point.latitude, longitude: dto.point.longitude),
+            userName: dto.userName
+        )
     }
 }

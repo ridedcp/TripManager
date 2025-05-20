@@ -10,25 +10,24 @@ import MapKit
 
 @MainActor
 final class TripMapViewModel: ObservableObject {
-    @Published var detailedStops: [StopDetailed] = []
-    @Published var selectedStop: StopDetailed?
+    @Published var detailedStop: StopDetailed?
+    @Published var selectedStopIndex: Int?
     @Published var routeCoordinates: [CLLocationCoordinate2D] = []
 
-    private let getDetailedStopsUseCase: GetDetailedStopsUseCase
+    private let getDetailedStopUseCase: GetDetailedStopUseCase
 
-    init(getDetailedStopsUseCase: GetDetailedStopsUseCase) {
-        self.getDetailedStopsUseCase = getDetailedStopsUseCase
+    init(getDetailedStopUseCase: GetDetailedStopUseCase) {
+        self.getDetailedStopUseCase = getDetailedStopUseCase
     }
 
-    func loadDetailedStops(for tripId: Int) async {
+    func loadDetailedStop() async {
         do {
-            let allStops = try await getDetailedStopsUseCase.execute()
-            detailedStops = allStops.filter { $0.tripId == tripId }
+            detailedStop = try await getDetailedStopUseCase.execute()
         } catch {
-            detailedStops = []
+            detailedStop = nil
         }
     }
-    
+
     func decodePolyline(_ route: String) {
         routeCoordinates = RouteDecoder.decodePolyline(route)
     }

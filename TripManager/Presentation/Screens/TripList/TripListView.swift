@@ -19,7 +19,7 @@ struct TripListView: View {
                     destination: TripMapView(
                         trip: trip,
                         viewModel: TripMapViewModel(
-                            getDetailedStopsUseCase: GetDetailedStopsUseCaseImpl(
+                            getDetailedStopUseCase: GetDetailedStopUseCaseImpl(
                                 repository: StopDetailedRepositoryImpl(
                                     service: StopDetailedServiceImpl()
                                 )

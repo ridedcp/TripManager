@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol GetDetailedStopsUseCase {
-    func execute() async throws -> [StopDetailed]
+protocol GetDetailedStopUseCase {
+    func execute() async throws -> StopDetailed
 }

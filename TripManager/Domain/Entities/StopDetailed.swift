@@ -8,12 +8,11 @@
 import Foundation
 
 struct StopDetailed {
-    let id: Int
-    let point: GeoPoint
+    let price: Double
     let address: String
     let tripId: Int
     let paid: Bool
-    let stopTime: Date?
+    let stopTime: Date
+    let point: GeoPoint
     let userName: String
-    let price: Double
 }

@@ -44,7 +44,7 @@ struct StopDetailsSheet: View {
             Spacer()
         }
         .padding()
-        .presentationDetents([.fraction(0.25)])
+        .presentationDetents([.fraction(0.30)])
     }
 
     private func formattedDate(_ date: Date) -> String {
