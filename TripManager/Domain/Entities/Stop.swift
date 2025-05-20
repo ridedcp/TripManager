@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Stop: Equatable, Identifiable {
+struct Stop {
     let id: Int
     let point: GeoPoint
 }

@@ -1,5 +1,5 @@
 //
-//  DetailedStopService.swift
+//  StopDetailedService.swift
 //  TripManager
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -7,18 +7,18 @@
 
 import Foundation
 
-protocol DetailedStopService {
-    func fetchDetailedStops() async throws -> [DetailedStopDTO]
+protocol StopDetailedService {
+    func fetchDetailedStops() async throws -> [StopDetailedDTO]
 }
 
-final class DetailedStopServiceImpl: DetailedStopService {
+final class StopDetailedServiceImpl: StopDetailedService {
     private let session: URLSession
 
     init(session: URLSession = .shared) {
         self.session = session
     }
 
-    func fetchDetailedStops() async throws -> [DetailedStopDTO] {
+    func fetchDetailedStops() async throws -> [StopDetailedDTO] {
         let urlString = "https://sandbox-giravolta-static.s3.eu-west-1.amazonaws.com/tech-test/stops.json"
         guard let url = URL(string: urlString) else {
             throw TripServiceError.invalidURL
@@ -31,6 +31,6 @@ final class DetailedStopServiceImpl: DetailedStopService {
             throw TripServiceError.invalidResponse
         }
 
-        return try JSONDecoder().decode([DetailedStopDTO].self, from: data)
+        return try JSONDecoder().decode([StopDetailedDTO].self, from: data)
     }
 }
