@@ -26,6 +26,7 @@ final class MockGetTripsUseCase: GetTripsUseCase {
         case .success:
             return [
                 Trip(
+                    id: 0,
                     description: "Barcelona → Martorell",
                     driverName: "Alberto",
                     startTime: Date(),
@@ -41,6 +42,7 @@ final class MockGetTripsUseCase: GetTripsUseCase {
                     destinationAddress: "some destination"
                 ),
                 Trip(
+                    id: 0,
                     description: "Girona → Banyoles",
                     driverName: "María",
                     startTime: Date(),

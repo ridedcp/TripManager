@@ -29,7 +29,7 @@ final class TripMapperTests: XCTestCase {
         )
 
         // When
-        let trip = try TripMapper.map(dto: dto)
+        let trip = try TripMapper.map(dto: dto, id: 0)
 
         // Then
         XCTAssertEqual(trip.description, dto.description)
@@ -53,7 +53,7 @@ final class TripMapperTests: XCTestCase {
         )
 
         // When / Then
-        XCTAssertThrowsError(try TripMapper.map(dto: dto)) {
+        XCTAssertThrowsError(try TripMapper.map(dto: dto, id: 0)) {
             XCTAssertTrue($0 is TripMapperError)
         }
     }
@@ -72,7 +72,7 @@ final class TripMapperTests: XCTestCase {
         )
 
         // When
-        let trip = try TripMapper.map(dto: dto)
+        let trip = try TripMapper.map(dto: dto, id: 0)
 
         // Then
         XCTAssertEqual(trip.description, dto.description)
@@ -104,7 +104,7 @@ final class TripMapperTests: XCTestCase {
         )
 
         // When / Then
-        XCTAssertThrowsError(try TripMapper.map(dto: dto)) { error in
+        XCTAssertThrowsError(try TripMapper.map(dto: dto, id: 0)) { error in
             guard case TripMapperError.invalidDate(let value) = error else {
                 return XCTFail("Expected invalidDate, got \(error)")
             }
@@ -126,7 +126,7 @@ final class TripMapperTests: XCTestCase {
         )
 
         // When / Then
-        XCTAssertThrowsError(try TripMapper.map(dto: dto)) { error in
+        XCTAssertThrowsError(try TripMapper.map(dto: dto, id: 0)) { error in
             guard case TripMapperError.invalidDate(let value) = error else {
                 return XCTFail("Expected invalidDate, got \(error)")
             }
@@ -153,7 +153,7 @@ final class TripMapperTests: XCTestCase {
         )
 
         // When
-        let trip = try TripMapper.map(dto: dto)
+        let trip = try TripMapper.map(dto: dto, id: 0)
 
         // Then
         XCTAssertEqual(trip.stops.count, 2)
@@ -180,7 +180,7 @@ final class TripMapperTests: XCTestCase {
         )
 
         // When
-        let trip = try TripMapper.map(dto: dto)
+        let trip = try TripMapper.map(dto: dto, id: 0)
 
         // Then
         XCTAssertEqual(trip.stops.count, 1)

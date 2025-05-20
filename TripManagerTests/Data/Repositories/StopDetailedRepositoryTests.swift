@@ -10,29 +10,23 @@ import XCTest
 
 final class StopDetailedRepositoryTests: XCTestCase {
 
-    func test_getDetailedStops_returnsMappedStops() async throws {
-        // Given
-        let mockService = MockStopDetailedService(responseType: .success)
-        let repository = StopDetailedRepositoryImpl(service: mockService)
+    func test_getDetailedStops_returnsMappedStop() async throws {
+        let service = MockStopDetailedService(responseType: .success)
+        let repository = StopDetailedRepositoryImpl(service: service)
 
-        // When
-        let result = try await repository.getDetailedStops()
+        let stop = try await repository.getDetailedStop()
 
-        // Then
-        XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result[0].userName, "Manuel Gomez")
-        XCTAssertEqual(result[0].tripId, 1)
+        XCTAssertEqual(stop.tripId, 1)
+        XCTAssertEqual(stop.userName, "Manuel Gomez")
     }
-    
-    func test_getDetailedStops_throwsErrorOnFailure() async {
-        // Given
-        let mockService = MockStopDetailedService(responseType: .failure)
-        let repository = StopDetailedRepositoryImpl(service: mockService)
 
-        // When / Then
+    func test_getDetailedStops_throwsError() async {
+        let service = MockStopDetailedService(responseType: .failure)
+        let repository = StopDetailedRepositoryImpl(service: service)
+
         do {
-            _ = try await repository.getDetailedStops()
-            XCTFail("Expected to throw an error")
+            _ = try await repository.getDetailedStop()
+            XCTFail("Expected error")
         } catch {
             XCTAssertEqual(error as? MockError, .dummy)
         }

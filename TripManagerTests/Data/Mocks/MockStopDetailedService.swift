@@ -24,23 +24,21 @@ final class MockStopDetailedService: StopDetailedService {
         self.responseType = responseType
     }
 
-    func fetchDetailedStops() async throws -> [DetailedStopDTO] {
+    func fetchDetailedStop() async throws -> DetailedStopDTO {
         switch responseType {
         case .success:
-            return [
-                DetailedStopDTO(
-                    id: 1,
-                    point: PointDTO(latitude: 41.37653, longitude: 2.17924),
-                    address: "Ramblas, Barcelona",
-                    tripId: 1,
-                    paid: true,
-                    stopTime: "2018-12-18T08:10:00.000Z",
-                    userName: "Manuel Gomez",
-                    price: 1.5
-                )
-            ]
+            return DetailedStopDTO(
+                price: 1.5,
+                address: "Ramblas, Barcelona",
+                tripId: 1,
+                paid: true,
+                stopTime: "2018-12-18T08:10:00.000Z",
+                point: PointDTO(latitude: 41.37653, longitude: 2.17924),
+                userName: "Manuel Gomez"
+            )
         case .failure:
             throw MockError.dummy
         }
     }
 }
+

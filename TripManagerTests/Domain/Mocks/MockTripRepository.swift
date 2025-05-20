@@ -26,6 +26,7 @@ final class MockTripRepository: TripRepository {
         case .success:
             return [
                 Trip(
+                    id: 0,
                     description: "Mock trip",
                     driverName: "Driver",
                     startTime: Date(),

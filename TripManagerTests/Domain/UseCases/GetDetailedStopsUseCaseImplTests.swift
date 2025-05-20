@@ -12,33 +12,32 @@ final class GetDetailedStopsUseCaseImplTests: XCTestCase {
 
     func test_execute_returnsStopsOnSuccess() async throws {
         // Given
-        let expectedStops = [
-            DetailedStop(
-                id: 1,
-                point: GeoPoint(latitude: 41.38, longitude: 2.18),
-                address: "Barcelona",
-                tripId: 1,
-                paid: true,
-                stopTime: Date(),
-                userName: "Daniel",
-                price: 1.5
-            )
-        ]
-        let repository = MockStopDetailedRepository(result: .success(expectedStops))
-        let useCase = GetDetailedStopsUseCaseImpl(repository: repository)
+        let expectedStop =
+        DetailedStop(
+            price: 1.5,
+            address: "Barcelona",
+            tripId: 1,
+            paid: true,
+            stopTime: Date(),
+            point: GeoPoint(latitude: 41.38, longitude: 2.18),
+            userName: "Daniel"
+        )
+        
+        let repository = MockStopDetailedRepository(result: .success(expectedStop))
+        let useCase = GetDetailedStopUseCaseImpl(repository: repository)
 
         // When
         let result = try await useCase.execute()
 
         // Then
-        XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result[0].id, expectedStops[0].id)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result.tripId, expectedStop.tripId)
     }
 
     func test_execute_throwsErrorOnFailure() async {
         // Given
         let repository = MockStopDetailedRepository(result: .failure(TripServiceError.invalidResponse))
-        let useCase = GetDetailedStopsUseCaseImpl(repository: repository)
+        let useCase = GetDetailedStopUseCaseImpl(repository: repository)
 
         // When / Then
         do {

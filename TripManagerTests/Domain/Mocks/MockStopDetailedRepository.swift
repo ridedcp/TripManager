@@ -9,16 +9,16 @@ import Foundation
 @testable import TripManager
 
 final class MockStopDetailedRepository: StopDetailedRepository {
-    private let result: Result<[DetailedStop], Error>
+    private let result: Result<DetailedStop, Error>
 
-    init(result: Result<[DetailedStop], Error>) {
+    init(result: Result<DetailedStop, Error>) {
         self.result = result
     }
 
-    func getDetailedStops() async throws -> [DetailedStop] {
+    func getDetailedStop() async throws -> DetailedStop {
         switch result {
-        case .success(let stops):
-            return stops
+        case .success(let stop):
+            return stop
         case .failure(let error):
             throw error
         }

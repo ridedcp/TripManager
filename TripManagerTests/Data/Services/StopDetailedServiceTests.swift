@@ -10,21 +10,18 @@ import XCTest
 
 final class StopDetailedServiceTests: XCTestCase {
 
-    func test_fetchDetailedStops_returnsDecodedDTOs() async throws {
+    func test_fetchDetailedStop_returnsDecodedDTO() async throws {
         // Given
         let json = """
-        [
-            {
-                "id": 1,
-                "point": { "_latitude": 41.37653, "_longitude": 2.17924 },
-                "address": "Ramblas, Barcelona",
-                "tripId": 1,
-                "paid": true,
-                "stopTime": "2018-12-18T08:10:00.000Z",
-                "userName": "Manuel Gomez",
-                "price": 1.5
-            }
-        ]
+        {
+            "price": 1.5,
+            "address": "Ramblas, Barcelona",
+            "tripId": 1,
+            "paid": true,
+            "stopTime": "2018-12-18T08:10:00.000Z",
+            "point": { "_latitude": 41.37653, "_longitude": 2.17924 },
+            "userName": "Manuel Gomez"
+        }
         """.data(using: .utf8)!
 
         MockURLProtocol.mockResponseData = json
@@ -35,15 +32,15 @@ final class StopDetailedServiceTests: XCTestCase {
         let service = StopDetailedServiceImpl(session: session)
 
         // When
-        let result = try await service.fetchDetailedStops()
+        let result = try await service.fetchDetailedStop()
 
         // Then
-        XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result[0].id, 1)
-        XCTAssertEqual(result[0].userName, "Manuel Gomez")
+        XCTAssertEqual(result.userName, "Manuel Gomez")
+        XCTAssertEqual(result.tripId, 1)
+        XCTAssertEqual(result.price, 1.5)
     }
 
-    func test_fetchDetailedStops_throwsOnInvalidJSON() async {
+    func test_fetchDetailedStop_throwsOnInvalidJSON() async {
         // Given
         let invalidJSON = "{ bad json ]".data(using: .utf8)!
         MockURLProtocol.mockResponseData = invalidJSON
@@ -55,16 +52,16 @@ final class StopDetailedServiceTests: XCTestCase {
 
         // When / Then
         do {
-            _ = try await service.fetchDetailedStops()
+            _ = try await service.fetchDetailedStop()
             XCTFail("Expected error was not thrown")
         } catch {
             XCTAssertTrue(error is DecodingError || error is TripServiceError)
         }
     }
 
-    func test_fetchDetailedStops_throwsOnBadStatusCode() async {
+    func test_fetchDetailedStop_throwsOnBadStatusCode() async {
         // Given
-        let validJSON = "[]".data(using: .utf8)!
+        let validJSON = "{}".data(using: .utf8)!
         MockURLProtocol.mockResponseData = validJSON
         MockURLProtocol.responseStatusCode = 500
 
@@ -76,7 +73,7 @@ final class StopDetailedServiceTests: XCTestCase {
 
         // When / Then
         do {
-            _ = try await service.fetchDetailedStops()
+            _ = try await service.fetchDetailedStop()
             XCTFail("Expected error was not thrown")
         } catch let error as TripServiceError {
             switch error {
@@ -90,4 +87,3 @@ final class StopDetailedServiceTests: XCTestCase {
         }
     }
 }
-
