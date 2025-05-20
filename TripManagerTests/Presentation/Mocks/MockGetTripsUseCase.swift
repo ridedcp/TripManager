@@ -36,7 +36,9 @@ final class MockGetTripsUseCase: GetTripsUseCase {
                     stops: [
                         Stop(id: 1, point: GeoPoint(latitude: 41.385, longitude: 2.18)),
                         Stop(id: 2, point: GeoPoint(latitude: 41.39, longitude: 2.17))
-                    ]
+                    ],
+                    originAddress: "some origin",
+                    destinationAddress: "some destination"
                 ),
                 Trip(
                     description: "Girona → Banyoles",
@@ -49,7 +51,9 @@ final class MockGetTripsUseCase: GetTripsUseCase {
                     stops: [
                         Stop(id: 3, point: GeoPoint(latitude: 42.07967, longitude: 2.81734)),
                         Stop(id: 4, point: GeoPoint(latitude: 42.10362, longitude: 2.80567))
-                    ]
+                    ],
+                    originAddress: "some origin",
+                    destinationAddress: "some destination"
                 )
             ]
         case .failure:

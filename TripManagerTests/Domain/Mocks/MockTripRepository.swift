@@ -36,7 +36,9 @@ final class MockTripRepository: TripRepository {
                     stops: [
                         Stop(id: 1, point: GeoPoint(latitude: 41.385, longitude: 2.18)),
                         Stop(id: 2, point: GeoPoint(latitude: 41.39, longitude: 2.17))
-                    ]
+                    ],
+                    originAddress: "some origin",
+                    destinationAddress: "some destination"
                 )
             ]
         case .failure:
