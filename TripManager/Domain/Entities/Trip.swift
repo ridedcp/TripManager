@@ -16,4 +16,6 @@ struct Trip {
     let destination: GeoPoint
     let route: String
     let stops: [Stop]
+    let originAddress: String
+    let destinationAddress: String
 }

@@ -50,7 +50,9 @@ final class FakeGetTripsUseCase: GetTripsUseCase {
                     Stop(id: 1, point: GeoPoint(latitude: 41.385, longitude: 2.175)),
                     Stop(id: 2, point: GeoPoint(latitude: 41.387, longitude: 2.170)),
                     Stop(id: 3, point: GeoPoint(latitude: 41.388, longitude: 2.165))
-                ]
+                ],
+                originAddress: "some origin",
+                destinationAddress: "some destination"
             )
         ]
     }

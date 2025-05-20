@@ -14,22 +14,35 @@ struct TripMapView: View {
 
     @State private var routeCoordinates: [CLLocationCoordinate2D] = []
     @State private var cameraPosition: MapCameraPosition = .automatic
+    @State private var selectedMarker: SelectedMarker?
 
     var body: some View {
         VStack(spacing: 0) {
             Map(position: $cameraPosition) {
-                Marker("Start", coordinate: CLLocationCoordinate2D(latitude: trip.origin.latitude, longitude: trip.origin.longitude))
-                    .tint(.green)
+                Annotation("Start", coordinate: CLLocationCoordinate2D(latitude: trip.origin.latitude, longitude: trip.origin.longitude)) {
+                    MapPinView(color: .green)
+                        .onTapGesture {
+                            selectedMarker = .start
+                        }
+                }
                 
-                Marker("End", coordinate: CLLocationCoordinate2D(latitude: trip.destination.latitude, longitude: trip.destination.longitude))
-                    .tint(.red)
-
+                Annotation("End", coordinate: CLLocationCoordinate2D(latitude: trip.destination.latitude, longitude: trip.destination.longitude)) {
+                    MapPinView(color: .red)
+                        .onTapGesture {
+                            selectedMarker = .end
+                        }
+                }
+                
                 ForEach(Array(trip.stops.enumerated()), id: \.1.id) { index, stop in
                     let coord = CLLocationCoordinate2D(latitude: stop.point.latitude, longitude: stop.point.longitude)
-                    Marker("Stop \(index + 1)", coordinate: coord)
-                        .tint(.blue)
+                    Annotation("Stop \(index + 1)", coordinate: coord) {
+                        MapPinView(color: .blue)
+                            .onTapGesture {
+                                selectedMarker = .stop(index + 1)
+                            }
+                    }
                 }
-
+                
                 if !routeCoordinates.isEmpty {
                     MapPolyline(coordinates: routeCoordinates)
                         .stroke(.blue, lineWidth: 4)
@@ -46,14 +59,14 @@ struct TripMapView: View {
                 )
                 routeCoordinates = RouteDecoder.decodePolyline(trip.route)
             }
-
+            
             VStack(alignment: .leading, spacing: 6) {
                 Text(trip.description)
                     .font(.headline)
-
+                
                 Text("Driver: \(trip.driverName)")
                     .font(.subheadline)
-
+                
                 Text("From \(formattedDate(trip.startTime)) to \(formattedDate(trip.endTime))")
                     .font(.caption)
                     .foregroundColor(.secondary)
@@ -74,6 +87,48 @@ struct TripMapView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(.thinMaterial)
         }
+        .sheet(item: $selectedMarker) { marker in
+            VStack(spacing: 12) {
+                Text(marker.title)
+                    .font(.headline)
+                    .padding(.top)
+                
+                Divider()
+                
+                switch marker {
+                case .start:
+                    Text(trip.originAddress)
+                        .font(.body)
+                    VStack(spacing: 8) {
+                        Text("Lat: \(trip.origin.latitude, specifier: "%.5f")")
+                        Text("Lon: \(trip.origin.longitude, specifier: "%.5f")")
+                    }
+                    .font(.caption)
+                    
+                case .end:
+                    Text(trip.destinationAddress)
+                        .font(.body)
+                    VStack(spacing: 8) {
+                        Text("Lat: \(trip.destination.latitude, specifier: "%.5f")")
+                        Text("Lon: \(trip.destination.longitude, specifier: "%.5f")")
+                    }
+                    .font(.caption)
+                    
+                case .stop(let index):
+                    let stop = trip.stops[safe: index - 1]
+                    if let stop = stop {
+                        Text("Lat: \(stop.point.latitude, specifier: "%.5f")")
+                        Text("Lon: \(stop.point.longitude, specifier: "%.5f")")
+                    } else {
+                        Text("Stop not found.")
+                    }
+                }
+                
+                Spacer()
+            }
+            .padding()
+            .presentationDetents([.fraction(0.2)])
+        }
     }
 
     private func formattedDate(_ date: Date) -> String {
@@ -81,6 +136,12 @@ struct TripMapView: View {
         formatter.timeStyle = .short
         formatter.dateStyle = .medium
         return formatter.string(from: date)
+    }
+}
+
+private extension Array {
+    subscript(safe index: Int) -> Element? {
+        indices.contains(index) ? self[index] : nil
     }
 }
 
@@ -101,6 +162,8 @@ private struct FakeTripMapData {
             Stop(id: 1, point: GeoPoint(latitude: 41.385, longitude: 2.175)),
             Stop(id: 2, point: GeoPoint(latitude: 41.387, longitude: 2.170)),
             Stop(id: 3, point: GeoPoint(latitude: 41.388, longitude: 2.165))
-        ]
+        ],
+        originAddress: "some origin",
+        destinationAddress: "some destination"
     )
 }

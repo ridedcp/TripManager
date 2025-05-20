@@ -28,7 +28,9 @@ struct TripMapper {
             origin: GeoPoint(latitude: dto.origin.point.latitude, longitude: dto.origin.point.longitude),
             destination: GeoPoint(latitude: dto.destination.point.latitude, longitude: dto.destination.point.longitude),
             route: dto.route,
-            stops: StopMapper.mapList(dtos: dto.stops ?? [])
+            stops: StopMapper.mapList(dtos: dto.stops ?? []),
+            originAddress: dto.origin.address,
+            destinationAddress: dto.destination.address
         )
     }
 }
