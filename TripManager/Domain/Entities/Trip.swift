@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Trip {
+struct Trip: Identifiable {
+    let id: Int
     let description: String
     let driverName: String
     let startTime: Date

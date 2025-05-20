@@ -8,7 +8,7 @@
 import Foundation
 
 struct TripMapper {
-    static func map(dto: TripDTO) throws -> Trip {
+    static func map(dto: TripDTO, id: Int) throws -> Trip {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
 
@@ -21,6 +21,7 @@ struct TripMapper {
         }
 
         return Trip(
+            id: id,
             description: dto.description,
             driverName: dto.driverName,
             startTime: start,
@@ -32,6 +33,19 @@ struct TripMapper {
             originAddress: dto.origin.address,
             destinationAddress: dto.destination.address
         )
+    }
+
+    static func mapList(dtos: [TripDTO]) -> [Trip] {
+        var result: [Trip] = []
+        for (index, dto) in dtos.enumerated() {
+            do {
+                let trip = try map(dto: dto, id: index)
+                result.append(trip)
+            } catch {
+                print("Failed to map trip: \(dto.description) — \(error)")
+            }
+        }
+        return result
     }
 }
 

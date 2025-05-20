@@ -16,7 +16,9 @@ final class TripRepositoryImpl: TripRepository {
 
     func getTrips() async throws -> [Trip] {
         let dtos = try await service.fetchTrips()
-        return try dtos.map { try TripMapper.map(dto: $0) }
+        return try dtos.enumerated().map { index, dto in
+            try TripMapper.map(dto: dto, id: index)
+        }
     }
 }
 

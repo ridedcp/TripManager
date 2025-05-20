@@ -7,13 +7,26 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct TripListView: View {
     @StateObject var viewModel: TripListViewModel
 
     var body: some View {
         NavigationView {
-            List(viewModel.trips, id: \.description) { trip in
-                NavigationLink(destination: TripMapView(trip: trip)) {
+            List(viewModel.trips, id: \.id) { trip in
+                NavigationLink(
+                    destination: TripMapView(
+                        trip: trip,
+                        viewModel: TripMapViewModel(
+                            getDetailedStopsUseCase: GetDetailedStopsUseCaseImpl(
+                                repository: StopDetailedRepositoryImpl(
+                                    service: StopDetailedServiceImpl()
+                                )
+                            )
+                        )
+                    )
+                ) {
                     VStack(alignment: .leading) {
                         Text(trip.description)
                             .font(.headline)
@@ -30,7 +43,6 @@ struct TripListView: View {
     }
 }
 
-
 #Preview {
     TripListView(viewModel: TripListViewModel(getTripsUseCase: FakeGetTripsUseCase()))
 }
@@ -39,6 +51,7 @@ final class FakeGetTripsUseCase: GetTripsUseCase {
     func execute() async throws -> [Trip] {
         [
             Trip(
+                id: 1,
                 description: "Preview Trip",
                 driverName: "Preview Driver",
                 startTime: Date(),

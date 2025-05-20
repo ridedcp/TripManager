@@ -12,39 +12,41 @@ import Polyline
 struct TripMapView: View {
     let trip: Trip
 
-    @State private var routeCoordinates: [CLLocationCoordinate2D] = []
+    @StateObject var viewModel: TripMapViewModel
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var selectedMarker: SelectedMarker?
 
     var body: some View {
         VStack(spacing: 0) {
-            Map(position: $cameraPosition) {
-                Annotation("Start", coordinate: CLLocationCoordinate2D(latitude: trip.origin.latitude, longitude: trip.origin.longitude)) {
+            Map(initialPosition: cameraPosition) {
+                Annotation("Start", coordinate: trip.origin.toCoord()) {
                     MapPinView(color: .green)
                         .onTapGesture {
                             selectedMarker = .start
                         }
                 }
-                
-                Annotation("End", coordinate: CLLocationCoordinate2D(latitude: trip.destination.latitude, longitude: trip.destination.longitude)) {
+
+                Annotation("End", coordinate: trip.destination.toCoord()) {
                     MapPinView(color: .red)
                         .onTapGesture {
                             selectedMarker = .end
                         }
                 }
-                
+
                 ForEach(Array(trip.stops.enumerated()), id: \.1.id) { index, stop in
-                    let coord = CLLocationCoordinate2D(latitude: stop.point.latitude, longitude: stop.point.longitude)
-                    Annotation("Stop \(index + 1)", coordinate: coord) {
+                    Annotation("Stop \(index + 1)", coordinate: stop.point.toCoord()) {
                         MapPinView(color: .blue)
                             .onTapGesture {
+                                if let detailedStop = viewModel.detailedStops.first(where: { $0.id == stop.id && $0.tripId == trip.id }) {
+                                    viewModel.selectedStop = detailedStop
+                                }
                                 selectedMarker = .stop(index + 1)
                             }
                     }
                 }
-                
-                if !routeCoordinates.isEmpty {
-                    MapPolyline(coordinates: routeCoordinates)
+
+                if !viewModel.routeCoordinates.isEmpty {
+                    MapPolyline(coordinates: viewModel.routeCoordinates)
                         .stroke(.blue, lineWidth: 4)
                 }
             }
@@ -57,100 +59,37 @@ struct TripMapView: View {
                         stops: trip.stops.map { $0.point }
                     )
                 )
-                routeCoordinates = RouteDecoder.decodePolyline(trip.route)
-            }
-            
-            VStack(alignment: .leading, spacing: 6) {
-                Text(trip.description)
-                    .font(.headline)
-                
-                Text("Driver: \(trip.driverName)")
-                    .font(.subheadline)
-                
-                Text("From \(formattedDate(trip.startTime)) to \(formattedDate(trip.endTime))")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                HStack {
-                    if trip.stops.isEmpty {
-                        Text("No stops")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    } else {
-                        Text("Stops: \(trip.stops.count)")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
+                viewModel.decodePolyline(trip.route)
+
+                Task {
+                    await viewModel.loadDetailedStops(for: trip.id)
                 }
             }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.thinMaterial)
+
+            TripInfoFooterView(trip: trip)
         }
         .sheet(item: $selectedMarker) { marker in
-            VStack(spacing: 12) {
-                Text(marker.title)
-                    .font(.headline)
-                    .padding(.top)
-                
-                Divider()
-                
-                switch marker {
-                case .start:
-                    Text(trip.originAddress)
-                        .font(.body)
-                    VStack(spacing: 8) {
-                        Text("Lat: \(trip.origin.latitude, specifier: "%.5f")")
-                        Text("Lon: \(trip.origin.longitude, specifier: "%.5f")")
-                    }
-                    .font(.caption)
-                    
-                case .end:
-                    Text(trip.destinationAddress)
-                        .font(.body)
-                    VStack(spacing: 8) {
-                        Text("Lat: \(trip.destination.latitude, specifier: "%.5f")")
-                        Text("Lon: \(trip.destination.longitude, specifier: "%.5f")")
-                    }
-                    .font(.caption)
-                    
-                case .stop(let index):
-                    let stop = trip.stops[safe: index - 1]
-                    if let stop = stop {
-                        Text("Lat: \(stop.point.latitude, specifier: "%.5f")")
-                        Text("Lon: \(stop.point.longitude, specifier: "%.5f")")
-                    } else {
-                        Text("Stop not found.")
-                    }
-                }
-                
-                Spacer()
-            }
-            .padding()
-            .presentationDetents([.fraction(0.2)])
+            StopDetailsSheet(marker: marker, trip: trip, stop: viewModel.selectedStop)
         }
-    }
-
-    private func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        formatter.dateStyle = .medium
-        return formatter.string(from: date)
-    }
-}
-
-private extension Array {
-    subscript(safe index: Int) -> Element? {
-        indices.contains(index) ? self[index] : nil
     }
 }
 
 #Preview {
-    TripMapView(trip: FakeTripMapData.previewTrip)
+    TripMapView(
+        trip: FakeTripMapData.previewTrip,
+        viewModel: TripMapViewModel(getDetailedStopsUseCase: FakeGetDetailedStopsUseCase())
+    )
+}
+
+final class FakeGetDetailedStopsUseCase: GetDetailedStopsUseCase {
+    func execute() async throws -> [StopDetailed] {
+        return []
+    }
 }
 
 private struct FakeTripMapData {
     static let previewTrip = Trip(
+        id: 1,
         description: "Preview Trip",
         driverName: "Driver Preview",
         startTime: Date(),
