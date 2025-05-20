@@ -1,5 +1,5 @@
 //
-//  StopRepositoryImpl.swift
+//  StopDetailedRepositoryImpl.swift
 //  TripManager
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class StopRepositoryImpl: StopRepository {
+final class StopDetailedRepositoryImpl: StopDetailedRepository {
     private let service: StopDetailedService
 
     init(service: StopDetailedService) {

@@ -8,9 +8,9 @@
 import Foundation
 
 final class GetDetailedStopsUseCaseImpl: GetDetailedStopsUseCase {
-    private let repository: StopRepository
+    private let repository: StopDetailedRepository
 
-    init(repository: StopRepository) {
+    init(repository: StopDetailedRepository) {
         self.repository = repository
     }
 
