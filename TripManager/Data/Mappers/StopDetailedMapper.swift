@@ -8,13 +8,13 @@
 import Foundation
 
 enum StopDetailedMapper {
-    static func map(dto: StopDetailedDTO) -> StopDetailed? {
+    static func map(dto: DetailedStopDTO) -> DetailedStop? {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
 
         guard let stopTime = formatter.date(from: dto.stopTime) else { return nil }
 
-        return StopDetailed(
+        return DetailedStop(
             price: dto.price,
             address: dto.address,
             tripId: dto.tripId,

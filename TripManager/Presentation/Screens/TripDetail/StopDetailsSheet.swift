@@ -10,7 +10,7 @@ import SwiftUI
 struct StopDetailsSheet: View {
     let marker: SelectedMarker
     let trip: Trip
-    let stop: StopDetailed?
+    let stop: DetailedStop?
 
     var body: some View {
         VStack(spacing: 12) {

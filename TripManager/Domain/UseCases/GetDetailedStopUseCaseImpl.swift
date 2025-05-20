@@ -14,7 +14,7 @@ final class GetDetailedStopUseCaseImpl: GetDetailedStopUseCase {
         self.repository = repository
     }
 
-    func execute() async throws -> StopDetailed {
+    func execute() async throws -> DetailedStop {
         try await repository.getDetailedStop()
     }
 }

@@ -76,8 +76,8 @@ struct TripMapView: View {
 }
 
 final class FakeGetDetailedStopUseCase: GetDetailedStopUseCase {
-    func execute() async throws -> StopDetailed {
-        return StopDetailed(price: 0.0, address: "", tripId: 0, paid: false, stopTime: Date(), point: GeoPoint(latitude: 0.0, longitude: 0.0), userName: "")
+    func execute() async throws -> DetailedStop {
+        return DetailedStop(price: 0.0, address: "", tripId: 0, paid: false, stopTime: Date(), point: GeoPoint(latitude: 0.0, longitude: 0.0), userName: "")
     }
 }
 

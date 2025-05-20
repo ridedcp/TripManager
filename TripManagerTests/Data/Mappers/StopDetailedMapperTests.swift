@@ -12,7 +12,7 @@ final class StopDetailedMapperTests: XCTestCase {
 
     func test_mapList_mapsValidDTOCorrectly() {
         // Given
-        let dto = StopDetailedDTO(
+        let dto = DetailedStopDTO(
             id: 1,
             point: PointDTO(latitude: 41.37653, longitude: 2.17924),
             address: "Ramblas, Barcelona",
@@ -54,7 +54,7 @@ final class StopDetailedMapperTests: XCTestCase {
 
     func test_mapList_skipsInvalidDTOs() {
         // Given: Missing required fields
-        let invalidDTO = StopDetailedDTO(
+        let invalidDTO = DetailedStopDTO(
             id: nil,
             point: nil,
             address: nil,

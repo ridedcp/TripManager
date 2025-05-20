@@ -13,7 +13,7 @@ final class GetDetailedStopsUseCaseImplTests: XCTestCase {
     func test_execute_returnsStopsOnSuccess() async throws {
         // Given
         let expectedStops = [
-            StopDetailed(
+            DetailedStop(
                 id: 1,
                 point: GeoPoint(latitude: 41.38, longitude: 2.18),
                 address: "Barcelona",

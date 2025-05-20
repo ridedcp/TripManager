@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct StopDetailed {
+struct DetailedStop {
     let price: Double
     let address: String
     let tripId: Int

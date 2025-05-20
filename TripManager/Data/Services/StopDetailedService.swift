@@ -8,7 +8,7 @@
 import Foundation
 
 protocol StopDetailedService {
-    func fetchDetailedStop() async throws -> StopDetailedDTO
+    func fetchDetailedStop() async throws -> DetailedStopDTO
 }
 
 final class StopDetailedServiceImpl: StopDetailedService {
@@ -18,7 +18,7 @@ final class StopDetailedServiceImpl: StopDetailedService {
         self.session = session
     }
 
-    func fetchDetailedStop() async throws -> StopDetailedDTO {
+    func fetchDetailedStop() async throws -> DetailedStopDTO {
         let urlString = "https://sandbox-giravolta-static.s3.eu-west-1.amazonaws.com/tech-test/stops.json"
         guard let url = URL(string: urlString) else {
             throw TripServiceError.invalidURL
@@ -31,6 +31,6 @@ final class StopDetailedServiceImpl: StopDetailedService {
             throw TripServiceError.invalidResponse
         }
 
-        return try JSONDecoder().decode(StopDetailedDTO.self, from: data)
+        return try JSONDecoder().decode(DetailedStopDTO.self, from: data)
     }
 }

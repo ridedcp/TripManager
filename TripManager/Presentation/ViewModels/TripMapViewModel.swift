@@ -10,7 +10,7 @@ import MapKit
 
 @MainActor
 final class TripMapViewModel: ObservableObject {
-    @Published var detailedStop: StopDetailed?
+    @Published var detailedStop: DetailedStop?
     @Published var selectedStopIndex: Int?
     @Published var routeCoordinates: [CLLocationCoordinate2D] = []
 

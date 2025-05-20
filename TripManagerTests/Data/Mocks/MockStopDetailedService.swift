@@ -5,8 +5,6 @@
 //  Created by Daniel Cano on 20/5/25.
 //
 
-// Tests/TripManagerTests/Mocks/Services/MockStopDetailedService.swift
-
 import Foundation
 @testable import TripManager
 
@@ -26,11 +24,11 @@ final class MockStopDetailedService: StopDetailedService {
         self.responseType = responseType
     }
 
-    func fetchDetailedStops() async throws -> [StopDetailedDTO] {
+    func fetchDetailedStops() async throws -> [DetailedStopDTO] {
         switch responseType {
         case .success:
             return [
-                StopDetailedDTO(
+                DetailedStopDTO(
                     id: 1,
                     point: PointDTO(latitude: 41.37653, longitude: 2.17924),
                     address: "Ramblas, Barcelona",

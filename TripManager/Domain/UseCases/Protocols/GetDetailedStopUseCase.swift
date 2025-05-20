@@ -8,5 +8,5 @@
 import Foundation
 
 protocol GetDetailedStopUseCase {
-    func execute() async throws -> StopDetailed
+    func execute() async throws -> DetailedStop
 }

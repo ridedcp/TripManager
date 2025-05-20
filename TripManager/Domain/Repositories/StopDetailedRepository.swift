@@ -8,5 +8,5 @@
 import Foundation
 
 protocol StopDetailedRepository {
-    func getDetailedStop() async throws -> StopDetailed
+    func getDetailedStop() async throws -> DetailedStop
 }

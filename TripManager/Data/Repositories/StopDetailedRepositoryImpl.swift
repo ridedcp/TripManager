@@ -14,7 +14,7 @@ final class StopDetailedRepositoryImpl: StopDetailedRepository {
         self.service = service
     }
 
-    func getDetailedStop() async throws -> StopDetailed {
+    func getDetailedStop() async throws -> DetailedStop {
         let dto = try await service.fetchDetailedStop()
         guard let stop = StopDetailedMapper.map(dto: dto) else {
             throw TripServiceError.decodingError
