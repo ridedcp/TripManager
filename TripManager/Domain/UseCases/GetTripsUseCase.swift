@@ -1,5 +1,5 @@
 //
-//  GetTripsUseCaseImpl.swift
+//  GetTripsUseCase.swift
 //  TripManager
 //
 //  Created by Daniel Cano on 16/5/25.

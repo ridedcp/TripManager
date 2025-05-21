@@ -8,26 +8,22 @@
 import Foundation
 
 final class IncidentRepositoryImpl: IncidentRepository {
-    private let key = "incidents_key"
+    private let store: IncidentStore
+
+    init(store: IncidentStore) {
+        self.store = store
+    }
 
     func save(_ incident: Incident) throws {
-        var all = try getAll()
-        all.append(incident)
-
-        let data = try JSONEncoder().encode(all)
-        UserDefaults.standard.set(data, forKey: key)
+        store.save(incident)
     }
 
     func getAll() throws -> [Incident] {
-        guard let data = UserDefaults.standard.data(forKey: key) else {
-            return []
-        }
-
-        return try JSONDecoder().decode([Incident].self, from: data)
+        store.getAll()
     }
 
     func count() -> Int {
-        (try? getAll().count) ?? 0
+        store.getAll().count
     }
 }
 

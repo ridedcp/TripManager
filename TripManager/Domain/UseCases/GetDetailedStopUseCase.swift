@@ -1,5 +1,5 @@
 //
-//  GetDetailedStopsUseCaseImpl.swift
+//  GetDetailedStopsUseCase.swift
 //  TripManager
 //
 //  Created by Daniel Cano on 20/5/25.

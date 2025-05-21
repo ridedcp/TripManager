@@ -1,5 +1,5 @@
 //
-//  SaveIncidentUseCaseImpl.swift
+//  SaveIncidentUseCase.swift
 //  TripManager
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -12,13 +12,13 @@ protocol SaveIncidentUseCase {
 }
 
 final class SaveIncidentUseCaseImpl: SaveIncidentUseCase {
-    private let store: IncidentStore
+    private let repository: IncidentRepository
 
-    init(store: IncidentStore) {
-        self.store = store
+    init(repository: IncidentRepository) {
+        self.repository = repository
     }
 
     func execute(_ incident: Incident) {
-        store.save(incident)
+        try? repository.save(incident)
     }
 }

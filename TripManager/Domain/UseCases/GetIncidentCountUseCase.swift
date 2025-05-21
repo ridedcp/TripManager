@@ -1,5 +1,5 @@
 //
-//  GetIncidentCountUseCaseImpl.swift
+//  GetIncidentCountUseCase.swift
 //  TripManager
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -12,13 +12,13 @@ protocol GetIncidentCountUseCase {
 }
 
 final class GetIncidentCountUseCaseImpl: GetIncidentCountUseCase {
-    private let store: IncidentStore
+    private let repository: IncidentRepository
 
-    init(store: IncidentStore) {
-        self.store = store
+    init(repository: IncidentRepository) {
+        self.repository = repository
     }
 
     func execute() -> Int {
-        store.getAll().count
+        repository.count()
     }
 }
