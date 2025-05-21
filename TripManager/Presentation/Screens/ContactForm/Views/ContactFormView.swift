@@ -74,10 +74,7 @@ struct ContactFormView: View {
 
 #Preview {
     ContactFormView(
-        viewModel: ContactFormViewModel(
-            saveIncidentUseCase: SaveIncidentUseCaseImpl(repository: IncidentRepositoryImpl(store: IncidentStoreImpl())
-            )
-        ),
+        viewModel: AppDIContainer().makeContactFormViewModel(),
         onDismiss: {}
     )
 }

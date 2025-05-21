@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TripListView: View {
     @StateObject var viewModel: TripListViewModel
+    let diContainer: AppDIContainer
     @State private var showContactForm = false
 
     var body: some View {
@@ -17,13 +18,7 @@ struct TripListView: View {
                 NavigationLink(
                     destination: TripMapView(
                         trip: trip,
-                        viewModel: TripMapViewModel(
-                            getDetailedStopUseCase: GetDetailedStopUseCaseImpl(
-                                repository: DetailedStopRepositoryImpl(
-                                    service: DetailedStopServiceImpl()
-                                )
-                            )
-                        )
+                        viewModel: diContainer.makeTripMapViewModel()
                     )
                 ) {
                     VStack(alignment: .leading) {
@@ -58,7 +53,7 @@ struct TripListView: View {
             }
             .sheet(isPresented: $showContactForm) {
                 ContactFormView(
-                    viewModel: makeContactFormViewModel(),
+                    viewModel: diContainer.makeContactFormViewModel(),
                     onDismiss: {
                         showContactForm = false
                         viewModel.loadIncidentCount()
@@ -71,18 +66,11 @@ struct TripListView: View {
             }
         }
     }
-    
-    private func makeContactFormViewModel() -> ContactFormViewModel {
-        ContactFormViewModel(
-            saveIncidentUseCase: SaveIncidentUseCaseImpl(
-                repository: IncidentRepositoryImpl(
-                    store: IncidentStoreImpl()
-                )
-            )
-        )
-    }
 }
 
 #Preview {
-    TripListView(viewModel: TripListViewModel(getTripsUseCase: GetTripsUseCaseImpl(repository: TripRepositoryImpl(service: TripServiceImpl(session: URLSession.shared))), getIncidentCountUseCase: GetIncidentCountUseCaseImpl(repository: IncidentRepositoryImpl(store: IncidentStoreImpl())), setBadgeCountUseCase: SetBadgeCountUseCaseImpl()))
+    TripListView(
+        viewModel: AppDIContainer().makeTripListViewModel(),
+        diContainer: AppDIContainer()
+    )
 }

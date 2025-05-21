@@ -9,23 +9,11 @@ import SwiftUI
 
 @main
 struct TripManagerApp: App {
+    private let diContainer = AppDIContainer()
+
     var body: some Scene {
         WindowGroup {
-            TripListView(
-                viewModel: TripListViewModel(
-                    getTripsUseCase: GetTripsUseCaseImpl(
-                        repository: TripRepositoryImpl(
-                            service: TripServiceImpl()
-                        )
-                    ),
-                    getIncidentCountUseCase: GetIncidentCountUseCaseImpl(
-                        repository: IncidentRepositoryImpl(
-                            store: IncidentStoreImpl()
-                        )
-                    ),
-                    setBadgeCountUseCase: SetBadgeCountUseCaseImpl()
-                )
-            )
+            TripListView(viewModel: diContainer.makeTripListViewModel(), diContainer: diContainer)
         }
     }
 }
