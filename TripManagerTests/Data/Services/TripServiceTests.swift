@@ -60,7 +60,7 @@ final class TripServiceTests: XCTestCase {
         [
             {
                 "description": "Invalid Trip",
-                "driver": "WrongKey", // ❌ incorrect key
+                "driver": "WrongKey",
                 "startTime": "2018-12-18T08:00:00.000Z",
                 "endTime": "2018-12-18T09:00:00.000Z"
             }

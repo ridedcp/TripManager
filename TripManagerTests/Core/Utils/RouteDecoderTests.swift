@@ -35,3 +35,6 @@ final class RouteDecoderTests: XCTestCase {
     }
 }
 
+//Website to get encoded
+//https://developers.google.com/maps/documentation/utilities/polylineutility?hl=es-419
+
