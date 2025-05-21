@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct TripListView: View {
     @StateObject var viewModel: TripListViewModel
 
@@ -36,37 +34,30 @@ struct TripListView: View {
                 }
             }
             .navigationTitle("Trips")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    ZStack {
+                        Image(systemName: "exclamationmark.bubble")
+                        if viewModel.incidentCount > 0 {
+                            Text("\(viewModel.incidentCount)")
+                                .font(.caption2)
+                                .foregroundColor(.white)
+                                .padding(5)
+                                .background(Color.red)
+                                .clipShape(Circle())
+                                .offset(x: 10, y: -10)
+                        }
+                    }
+                }
+            }
             .task {
                 await viewModel.loadTrips()
+                viewModel.loadIncidentCount()
             }
         }
     }
 }
 
 #Preview {
-    TripListView(viewModel: TripListViewModel(getTripsUseCase: FakeGetTripsUseCase()))
-}
-
-final class FakeGetTripsUseCase: GetTripsUseCase {
-    func execute() async throws -> [Trip] {
-        [
-            Trip(
-                id: 1,
-                description: "Preview Trip",
-                driverName: "Preview Driver",
-                startTime: Date(),
-                endTime: Date().addingTimeInterval(1800),
-                origin: GeoPoint(latitude: 41.38, longitude: 2.18),
-                destination: GeoPoint(latitude: 41.39, longitude: 2.16),
-                route: "abc123",
-                stops: [
-                    Stop(id: 1, point: GeoPoint(latitude: 41.385, longitude: 2.175)),
-                    Stop(id: 2, point: GeoPoint(latitude: 41.387, longitude: 2.170)),
-                    Stop(id: 3, point: GeoPoint(latitude: 41.388, longitude: 2.165))
-                ],
-                originAddress: "some origin",
-                destinationAddress: "some destination"
-            )
-        ]
-    }
+    TripListView(viewModel: TripListViewModel(getTripsUseCase: GetTripsUseCaseImpl(repository: TripRepositoryImpl(service: TripServiceImpl(session: URLSession.shared))), getIncidentCountUseCase: GetIncidentCountUseCaseImpl(repository: IncidentRepositoryImpl(store: IncidentStoreImpl())), setBadgeCountUseCase: SetBadgeCountUseCaseImpl()))
 }

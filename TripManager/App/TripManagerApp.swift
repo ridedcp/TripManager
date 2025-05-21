@@ -17,7 +17,13 @@ struct TripManagerApp: App {
                         repository: TripRepositoryImpl(
                             service: TripServiceImpl()
                         )
-                    )
+                    ),
+                    getIncidentCountUseCase: GetIncidentCountUseCaseImpl(
+                        repository: IncidentRepositoryImpl(
+                            store: IncidentStoreImpl()
+                        )
+                    ),
+                    setBadgeCountUseCase: SetBadgeCountUseCaseImpl()
                 )
             )
         }
