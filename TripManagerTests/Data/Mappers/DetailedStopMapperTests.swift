@@ -1,5 +1,5 @@
 //
-//  StopDetailedMapperTests.swift
+//  DetailedStopMapperTests.swift
 //  TripManagerTests
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import TripManager
 
-final class StopDetailedMapperTests: XCTestCase {
+final class DetailedStopMapperTests: XCTestCase {
 
     func test_map_validDTO_returnsDetailedStop() {
         // Given
@@ -23,7 +23,7 @@ final class StopDetailedMapperTests: XCTestCase {
         )
 
         // When
-        let result = StopDetailedMapper.map(dto: dto)
+        let result = DetailedStopMapper.map(dto: dto)
 
         // Then
         XCTAssertNotNil(result)
@@ -57,7 +57,7 @@ final class StopDetailedMapperTests: XCTestCase {
         )
 
         // When
-        let result = StopDetailedMapper.map(dto: dto)
+        let result = DetailedStopMapper.map(dto: dto)
 
         // Then
         XCTAssertNil(result, "Expected nil due to invalid date")

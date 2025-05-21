@@ -23,7 +23,7 @@ final class GetDetailedStopsUseCaseImplTests: XCTestCase {
             userName: "Daniel"
         )
         
-        let repository = MockStopDetailedRepository(result: .success(expectedStop))
+        let repository = MockDetailedStopRepository(result: .success(expectedStop))
         let useCase = GetDetailedStopUseCaseImpl(repository: repository)
 
         // When
@@ -36,7 +36,7 @@ final class GetDetailedStopsUseCaseImplTests: XCTestCase {
 
     func test_execute_throwsErrorOnFailure() async {
         // Given
-        let repository = MockStopDetailedRepository(result: .failure(TripServiceError.invalidResponse))
+        let repository = MockDetailedStopRepository(result: .failure(TripServiceError.invalidResponse))
         let useCase = GetDetailedStopUseCaseImpl(repository: repository)
 
         // When / Then

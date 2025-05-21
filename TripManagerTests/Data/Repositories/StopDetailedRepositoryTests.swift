@@ -1,5 +1,5 @@
 //
-//  StopDetailedRepositoryTests.swift
+//  DetailedStopRepositoryTests.swift
 //  TripManagerTests
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -8,11 +8,11 @@
 import XCTest
 @testable import TripManager
 
-final class StopDetailedRepositoryTests: XCTestCase {
+final class DetailedStopRepositoryTests: XCTestCase {
 
     func test_getDetailedStops_returnsMappedStop() async throws {
-        let service = MockStopDetailedService(responseType: .success)
-        let repository = StopDetailedRepositoryImpl(service: service)
+        let service = MockDetailedStopService(responseType: .success)
+        let repository = DetailedStopRepositoryImpl(service: service)
 
         let stop = try await repository.getDetailedStop()
 
@@ -21,8 +21,8 @@ final class StopDetailedRepositoryTests: XCTestCase {
     }
 
     func test_getDetailedStops_throwsError() async {
-        let service = MockStopDetailedService(responseType: .failure)
-        let repository = StopDetailedRepositoryImpl(service: service)
+        let service = MockDetailedStopService(responseType: .failure)
+        let repository = DetailedStopRepositoryImpl(service: service)
 
         do {
             _ = try await repository.getDetailedStop()

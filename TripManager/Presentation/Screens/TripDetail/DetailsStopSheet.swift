@@ -1,5 +1,5 @@
 //
-//  StopDetailsSheet.swift
+//  DetailsStopSheet.swift
 //  TripManager
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StopDetailsSheet: View {
+struct DetailsStopSheet: View {
     let marker: SelectedMarker
     let trip: Trip
     let stop: DetailedStop?

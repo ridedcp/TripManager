@@ -1,5 +1,5 @@
 //
-//  MockStopDetailedService.swift
+//  MockDetailedStopService.swift
 //  TripManagerTests
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -12,7 +12,7 @@ enum MockError: Error, Equatable {
     case dummy
 }
 
-final class MockStopDetailedService: StopDetailedService {
+final class MockDetailedStopService: DetailedStopService {
     enum ResponseType {
         case success
         case failure

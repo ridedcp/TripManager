@@ -1,5 +1,5 @@
 //
-//  StopDetailedService.swift
+//  DetailedStopService.swift
 //  TripManager
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol StopDetailedService {
+protocol DetailedStopService {
     func fetchDetailedStop() async throws -> DetailedStopDTO
 }
 
-final class StopDetailedServiceImpl: StopDetailedService {
+final class DetailedStopServiceImpl: DetailedStopService {
     private let session: URLSession
 
     init(session: URLSession = .shared) {

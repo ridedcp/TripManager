@@ -63,7 +63,7 @@ struct TripMapView: View {
             TripInfoFooterView(trip: trip)
         }
         .sheet(item: $selectedMarker) { marker in
-            StopDetailsSheet(marker: marker, trip: trip, stop: viewModel.detailedStop)
+            DetailsStopSheet(marker: marker, trip: trip, stop: viewModel.detailedStop)
         }
     }
 }

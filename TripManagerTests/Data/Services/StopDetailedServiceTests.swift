@@ -1,5 +1,5 @@
 //
-//  StopDetailedServiceTests.swift
+//  DetailedStopServiceTests.swift
 //  TripManagerTests
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import TripManager
 
-final class StopDetailedServiceTests: XCTestCase {
+final class DetailedStopServiceTests: XCTestCase {
 
     func test_fetchDetailedStop_returnsDecodedDTO() async throws {
         // Given
@@ -29,7 +29,7 @@ final class StopDetailedServiceTests: XCTestCase {
         config.protocolClasses = [MockURLProtocol.self]
         let session = URLSession(configuration: config)
 
-        let service = StopDetailedServiceImpl(session: session)
+        let service = DetailedStopServiceImpl(session: session)
 
         // When
         let result = try await service.fetchDetailedStop()
@@ -48,7 +48,7 @@ final class StopDetailedServiceTests: XCTestCase {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [MockURLProtocol.self]
         let session = URLSession(configuration: config)
-        let service = StopDetailedServiceImpl(session: session)
+        let service = DetailedStopServiceImpl(session: session)
 
         // When / Then
         do {
@@ -69,7 +69,7 @@ final class StopDetailedServiceTests: XCTestCase {
         config.protocolClasses = [MockURLProtocol.self]
         let session = URLSession(configuration: config)
 
-        let service = StopDetailedServiceImpl(session: session)
+        let service = DetailedStopServiceImpl(session: session)
 
         // When / Then
         do {

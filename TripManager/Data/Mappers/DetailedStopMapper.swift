@@ -1,5 +1,5 @@
 //
-//  StopDetailedMapper.swift
+//  DetailedStopMapper.swift
 //  TripManager
 //
 //  Created by Daniel Cano on 20/5/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum StopDetailedMapper {
+enum DetailedStopMapper {
     static func map(dto: DetailedStopDTO) -> DetailedStop? {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
