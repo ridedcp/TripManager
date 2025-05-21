@@ -21,6 +21,7 @@ struct TripMapView: View {
             Map(initialPosition: cameraPosition) {
                 Annotation("Start", coordinate: trip.origin.toCoord()) {
                     MapPinView(color: .green)
+                        .accessibilityIdentifier("startPin")
                         .onTapGesture {
                             selectedMarker = .start
                         }
@@ -28,6 +29,7 @@ struct TripMapView: View {
 
                 Annotation("End", coordinate: trip.destination.toCoord()) {
                     MapPinView(color: .red)
+                        .accessibilityIdentifier("endPin")
                         .onTapGesture {
                             selectedMarker = .end
                         }
@@ -36,6 +38,7 @@ struct TripMapView: View {
                 ForEach(Array(trip.stops.enumerated()), id: \.1.id) { index, stop in
                     Annotation("Stop \(index + 1)", coordinate: stop.point.toCoord()) {
                         MapPinView(color: .blue)
+                            .accessibilityIdentifier("stopPin\(index + 1)")
                             .onTapGesture {
                                 selectedMarker = .stop(index + 1)
                             }
@@ -47,6 +50,7 @@ struct TripMapView: View {
                         .stroke(.blue, lineWidth: 4)
                 }
             }
+            .accessibilityIdentifier("tripMap")
             .frame(maxHeight: .infinity)
             .onAppear {
                 cameraPosition = .region(

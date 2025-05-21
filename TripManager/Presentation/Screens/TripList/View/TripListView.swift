@@ -42,6 +42,7 @@ struct TripListView: View {
                     } label: {
                         ZStack {
                             Image(systemName: "exclamationmark.bubble")
+                                .accessibilityIdentifier("contactFormButton")
                             if viewModel.incidentCount > 0 {
                                 Text("\(viewModel.incidentCount)")
                                     .font(.caption2)
