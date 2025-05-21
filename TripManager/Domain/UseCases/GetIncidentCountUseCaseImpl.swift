@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol GetIncidentCountUseCase {
+    func execute() -> Int
+}
+
 final class GetIncidentCountUseCaseImpl: GetIncidentCountUseCase {
     private let store: IncidentStore
 

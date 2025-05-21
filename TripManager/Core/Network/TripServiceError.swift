@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TripServiceError: Error, LocalizedError {
+enum TripServiceError: Error {
     case invalidURL
     case invalidResponse
     case decodingError

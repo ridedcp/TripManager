@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol GetTripsUseCase {
+    func execute() async throws -> [Trip]
+}
+
 final class GetTripsUseCaseImpl: GetTripsUseCase {
     private let repository: TripRepository
 

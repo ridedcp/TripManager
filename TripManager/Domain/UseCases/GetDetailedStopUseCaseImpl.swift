@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol GetDetailedStopUseCase {
+    func execute() async throws -> DetailedStop
+}
+
 final class GetDetailedStopUseCaseImpl: GetDetailedStopUseCase {
     private let repository: DetailedStopRepository
 

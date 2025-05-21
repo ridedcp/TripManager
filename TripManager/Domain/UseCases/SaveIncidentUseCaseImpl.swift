@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol SaveIncidentUseCase {
+    func execute(_ incident: Incident)
+}
+
 final class SaveIncidentUseCaseImpl: SaveIncidentUseCase {
     private let store: IncidentStore
 
