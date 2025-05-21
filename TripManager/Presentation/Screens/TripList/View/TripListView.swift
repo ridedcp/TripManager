@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TripListView: View {
     @StateObject var viewModel: TripListViewModel
+    @State private var showContactForm = false
 
     var body: some View {
         NavigationView {
@@ -36,25 +37,48 @@ struct TripListView: View {
             .navigationTitle("Trips")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    ZStack {
-                        Image(systemName: "exclamationmark.bubble")
-                        if viewModel.incidentCount > 0 {
-                            Text("\(viewModel.incidentCount)")
-                                .font(.caption2)
-                                .foregroundColor(.white)
-                                .padding(5)
-                                .background(Color.red)
-                                .clipShape(Circle())
-                                .offset(x: 10, y: -10)
+                    Button {
+                        showContactForm = true
+                    } label: {
+                        ZStack {
+                            Image(systemName: "exclamationmark.bubble")
+                            if viewModel.incidentCount > 0 {
+                                Text("\(viewModel.incidentCount)")
+                                    .font(.caption2)
+                                    .foregroundColor(.white)
+                                    .padding(5)
+                                    .background(Color.red)
+                                    .clipShape(Circle())
+                                    .offset(x: 10, y: -10)
+                            }
                         }
                     }
                 }
+            }
+            .sheet(isPresented: $showContactForm) {
+                ContactFormView(
+                    viewModel: makeContactFormViewModel(),
+                    onDismiss: {
+                        showContactForm = false
+                        viewModel.loadIncidentCount()
+                    }
+                )
             }
             .task {
                 await viewModel.loadTrips()
                 viewModel.loadIncidentCount()
             }
         }
+    }
+    
+    private func makeContactFormViewModel() -> ContactFormViewModel {
+        ContactFormViewModel(
+            saveIncidentUseCase: SaveIncidentUseCaseImpl(
+                repository: IncidentRepositoryImpl(
+                    store: IncidentStoreImpl()
+                )
+            )
+        )
     }
 }
 

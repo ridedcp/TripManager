@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContactFormView: View {
     @StateObject var viewModel: ContactFormViewModel
-
+    var onDismiss: () -> Void
+    
     var body: some View {
         NavigationView {
             Form {
@@ -55,7 +56,9 @@ struct ContactFormView: View {
                 Text(viewModel.errorMessage)
             }
             .alert("Saved", isPresented: $viewModel.didSave) {
-                Button("OK", role: .cancel) {}
+                Button("OK", role: .cancel) {
+                    onDismiss()
+                }
             } message: {
                 Text("Your report was saved.")
             }
@@ -74,6 +77,7 @@ struct ContactFormView: View {
         viewModel: ContactFormViewModel(
             saveIncidentUseCase: SaveIncidentUseCaseImpl(repository: IncidentRepositoryImpl(store: IncidentStoreImpl())
             )
-        )
+        ),
+        onDismiss: {}
     )
 }
