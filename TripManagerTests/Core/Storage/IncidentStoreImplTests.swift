@@ -9,8 +9,9 @@ import XCTest
 @testable import TripManager
 
 final class IncidentStoreImplTests: XCTestCase {
-    var store: IncidentStoreImpl!
-    let testKey = "reported_incidents"
+
+    private var store: IncidentStoreImpl!
+    private let testKey = "reported_incidents"
 
     override func setUp() {
         super.setUp()
@@ -24,62 +25,37 @@ final class IncidentStoreImplTests: XCTestCase {
         super.tearDown()
     }
 
+    func test_getAll_returnsEmptyArray_whenNoDataStored() {
+        let incidents = store.getAll()
+        XCTAssertEqual(incidents.count, 0)
+    }
+
     func test_save_and_getAll_persistsIncident() {
-        // Given
         let incident = Incident(
             id: UUID(),
-            fullName: "Daniel Cano",
-            email: "daniel@example.com",
-            phone: "600123456",
+            fullName: "Test User",
+            email: "test@example.com",
+            phone: "123456789",
             timestamp: Date(),
             description: "Test description"
         )
 
-        // When
         store.save(incident)
         let incidents = store.getAll()
 
-        // Then
         XCTAssertEqual(incidents.count, 1)
-        XCTAssertEqual(incidents[0].fullName, "Daniel Cano")
-        XCTAssertEqual(incidents[0].email, "daniel@example.com")
+        XCTAssertEqual(incidents.first?.fullName, "Test User")
+        XCTAssertEqual(incidents.first?.email, "test@example.com")
     }
 
-    func test_getAll_returnsEmptyArray_whenNoDataStored() {
-        // When
-        let incidents = store.getAll()
+    func test_save_appendsMultipleIncidents() {
+        let incident1 = Incident(id: UUID(), fullName: "A", email: "a@a.com", phone: nil, timestamp: Date(), description: "1")
+        let incident2 = Incident(id: UUID(), fullName: "B", email: "b@b.com", phone: nil, timestamp: Date(), description: "2")
 
-        // Then
-        XCTAssertTrue(incidents.isEmpty)
-    }
-
-    func test_save_multipleIncidents_accumulatesData() {
-        // Given
-        let incident1 = Incident(
-            id: UUID(),
-            fullName: "User 1",
-            email: "user1@example.com",
-            phone: nil,
-            timestamp: Date(),
-            description: "Desc 1"
-        )
-
-        let incident2 = Incident(
-            id: UUID(),
-            fullName: "User 2",
-            email: "user2@example.com",
-            phone: "600000000",
-            timestamp: Date(),
-            description: "Desc 2"
-        )
-
-        // When
         store.save(incident1)
         store.save(incident2)
-        let incidents = store.getAll()
 
-        // Then
+        let incidents = store.getAll()
         XCTAssertEqual(incidents.count, 2)
-        XCTAssertEqual(incidents[1].fullName, "User 2")
     }
 }

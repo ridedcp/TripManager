@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Incident: Codable, Identifiable {
+struct Incident: Codable, Identifiable, Equatable {
     let id: UUID
     let fullName: String
     let email: String
