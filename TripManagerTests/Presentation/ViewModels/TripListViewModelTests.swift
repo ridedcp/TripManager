@@ -10,8 +10,16 @@ import XCTest
 
 final class TripListViewModelTests: XCTestCase {
 
-    private func makeSUT(responseType: MockGetTripsUseCase.ResponseType) async -> TripListViewModel {
-        await TripListViewModel(getTripsUseCase: MockGetTripsUseCase(responseType: responseType))
+    private func makeSUT(responseType: MockGetTripsUseCase.ResponseType, incidentCount: Int = 1) async -> TripListViewModel {
+        let getTripsUseCase = MockGetTripsUseCase(responseType: responseType)
+        let getIncidentCountUseCase = MockGetIncidentCountUseCase(count: incidentCount)
+        let setBadgeCountUseCase = MockSetBadgeCountUseCase()
+        
+        return await TripListViewModel(
+            getTripsUseCase: getTripsUseCase,
+            getIncidentCountUseCase: getIncidentCountUseCase,
+            setBadgeCountUseCase: setBadgeCountUseCase
+        )
     }
 
     // MARK: - Tests
@@ -47,8 +55,7 @@ final class TripListViewModelTests: XCTestCase {
     
     func test_loadTrips_withTwoTrips_returnsCorrectCount() async {
         // Given
-        let useCase = MockGetTripsUseCase(responseType: .success)
-        let viewModel = await TripListViewModel(getTripsUseCase: useCase)
+        let viewModel = await makeSUT(responseType: .success)
         
         // When
         await viewModel.loadTrips()
@@ -63,8 +70,7 @@ final class TripListViewModelTests: XCTestCase {
     
     func test_loadTrips_withFailure_setsErrorMessage() async {
         // Given
-        let useCase = MockGetTripsUseCase(responseType: .failure)
-        let viewModel = await TripListViewModel(getTripsUseCase: useCase)
+        let viewModel = await makeSUT(responseType: .failure)
 
         // When
         await viewModel.loadTrips()
