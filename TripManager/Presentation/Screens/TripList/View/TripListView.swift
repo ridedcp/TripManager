@@ -29,6 +29,7 @@ struct TripListView: View {
                     }
                 }
             }
+            .listStyle(.plain)
             .navigationTitle("Trips")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
