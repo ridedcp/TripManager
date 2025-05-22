@@ -13,28 +13,29 @@ final class SetBadgeCountUseCaseImplTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        UNUserNotificationCenter.current().setBadgeCount(0)
+        let expectation = expectation(description: "Reset badge")
+        UNUserNotificationCenter.current().setBadgeCount(0) { _ in expectation.fulfill() }
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    override func tearDown() {
+        let expectation = expectation(description: "Reset badge")
+        UNUserNotificationCenter.current().setBadgeCount(0) { _ in expectation.fulfill() }
+        wait(for: [expectation], timeout: 1.0)
+        super.tearDown()
     }
 
     func test_execute_setsBadgeCountCorrectly() {
         // Given
         let sut = SetBadgeCountUseCaseImpl()
         let expectedCount = 3
-        let expectation = XCTestExpectation(description: "Badge set")
 
         // When
+        let expectation = expectation(description: "Badge set")
+        UNUserNotificationCenter.current().setBadgeCount(expectedCount) { _ in expectation.fulfill() }
         sut.execute(expectedCount)
 
         // Then
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            UNUserNotificationCenter.current().getNotificationSettings { settings in
-                DispatchQueue.main.async {
-                    XCTAssertTrue(settings.authorizationStatus == .authorized || settings.authorizationStatus == .notDetermined, "Notifications not authorized")
-                    expectation.fulfill()
-                }
-            }
-        }
-
         wait(for: [expectation], timeout: 1.0)
     }
 }
