@@ -39,9 +39,6 @@ final class TripServiceImpl: TripService {
                 throw TripServiceError.decodingError
             }
 
-        } catch _ as DecodingError {
-            throw TripServiceError.decodingError
-
         } catch {
             throw TripServiceError.networkError(error)
         }

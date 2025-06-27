@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DetailsStopSheet: View {
-    let marker: SelectedMarker
     let trip: Trip
     let stop: DetailedStop?
 

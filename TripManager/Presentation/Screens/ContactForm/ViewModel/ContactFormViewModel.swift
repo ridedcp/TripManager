@@ -39,8 +39,6 @@ final class ContactFormViewModel: ObservableObject {
         isFullNameValid && isEmailValid && isPhoneValid && isDescriptionValid
     }
     
-    var onSubmitSuccess: (() -> Void)?
-
     private let saveIncidentUseCase: SaveIncidentUseCase
 
     init(saveIncidentUseCase: SaveIncidentUseCase) {
@@ -64,7 +62,6 @@ final class ContactFormViewModel: ObservableObject {
 
         saveIncidentUseCase.execute(incident)
         didSave = true
-        onSubmitSuccess?()
     }
 
     private func showValidationError(_ message: String) {

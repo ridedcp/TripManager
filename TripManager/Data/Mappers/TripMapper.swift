@@ -9,9 +9,6 @@ import Foundation
 
 struct TripMapper {
     static func map(dto: TripDTO, id: Int) throws -> Trip {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-
         guard let start = formatter.date(from: dto.startTime) else {
             throw TripMapperError.invalidDate(dto.startTime)
         }
@@ -34,19 +31,12 @@ struct TripMapper {
             destinationAddress: dto.destination.address
         )
     }
-
-    static func mapList(dtos: [TripDTO]) -> [Trip] {
-        var result: [Trip] = []
-        for (index, dto) in dtos.enumerated() {
-            do {
-                let trip = try map(dto: dto, id: index)
-                result.append(trip)
-            } catch {
-                print("Failed to map trip: \(dto.description) — \(error)")
-            }
-        }
-        return result
-    }
+    
+    private static let formatter: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return f
+    }()
 }
 
 

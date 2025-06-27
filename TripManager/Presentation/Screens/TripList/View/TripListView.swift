@@ -14,7 +14,7 @@ struct TripListView: View {
 
     var body: some View {
         NavigationView {
-            List(viewModel.trips, id: \.id) { trip in
+            List(viewModel.trips) { trip in
                 NavigationLink(
                     destination: TripMapView(
                         trip: trip,
@@ -64,6 +64,13 @@ struct TripListView: View {
             .task {
                 await viewModel.loadTrips()
                 viewModel.loadIncidentCount()
+            }
+            .alert("Error", isPresented: .constant(viewModel.errorMessage != nil)) {
+                Button("OK") {
+                    viewModel.errorMessage = nil
+                }
+            } message: {
+                Text(viewModel.errorMessage ?? "")
             }
         }
     }

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import MapKit
-import Polyline
 
 struct TripMapView: View {
     let trip: Trip
@@ -66,8 +65,8 @@ struct TripMapView: View {
 
             TripInfoFooterView(trip: trip)
         }
-        .sheet(item: $selectedMarker) { marker in
-            DetailsStopSheet(marker: marker, trip: trip, stop: viewModel.detailedStop)
+        .sheet(item: $selectedMarker) { _ in
+            DetailsStopSheet(trip: trip, stop: viewModel.detailedStop)
         }
     }
 }

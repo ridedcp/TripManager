@@ -32,8 +32,12 @@ final class TripListViewModel: ObservableObject {
         isLoading = true
         do {
             trips = try await getTripsUseCase.execute()
+        } catch let error as TripMapperError {
+            errorMessage = error.errorDescription
+        } catch let error as TripServiceError {
+            errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Failed to load trips"
+            errorMessage = error.localizedDescription
         }
         isLoading = false
     }
