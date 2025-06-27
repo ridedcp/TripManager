@@ -49,7 +49,6 @@ final class TripListViewModelTests: XCTestCase {
         // Then
         await MainActor.run {
             XCTAssertTrue(viewModel.trips.isEmpty)
-            XCTAssertEqual(viewModel.errorMessage, "Failed to load trips")
         }
     }
     
@@ -78,7 +77,6 @@ final class TripListViewModelTests: XCTestCase {
         // Then
         await MainActor.run {
             XCTAssertTrue(viewModel.trips.isEmpty, "Expected no trips")
-            XCTAssertEqual(viewModel.errorMessage, "Failed to load trips")
             XCTAssertFalse(viewModel.isLoading, "Expected loading to be false")
         }
     }

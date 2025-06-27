@@ -44,6 +44,8 @@ final class TripManagerUITests: XCTestCase {
 
         let emailField = app.textFields["Email"]
         emailField.tap()
+        sleep(1)
+        XCTAssertTrue(app.keyboards.element.waitForExistence(timeout: 2))
         emailField.typeText("test@example.com")
 
         let phoneField = app.textFields["Phone (optional)"]
